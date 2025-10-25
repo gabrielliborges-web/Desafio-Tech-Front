@@ -1,16 +1,35 @@
-import type { ReactNode } from "react";
+import type { ReactNode, ChangeEvent } from "react";
+import { X } from "lucide-react";
+
+type InputType =
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "date"
+    | "datetime-local"
+    | "time"
+    | "file"
+    | "checkbox"
+    | "radio"
+    | "search"
+    | "url"
+    | "tel"
+    | "range"
+    | "color";
 
 interface InputProps {
-    name?: string;
+    name: string;
     label?: string;
     placeholder?: string;
-    value?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    type?: string;
+    value?: string | number;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    type?: InputType;
     disabled?: boolean;
     required?: boolean;
     icon?: ReactNode;
     className?: string;
+    onClear?: () => void;
 }
 
 export default function Input({
@@ -19,16 +38,31 @@ export default function Input({
     placeholder,
     value,
     onChange,
+    onClear,
     type = "text",
     disabled = false,
     required = false,
     icon,
     className = "",
 }: InputProps) {
-    const showError = required && !value?.trim();
+    const showError =
+        required && (value === undefined || value === null || value === "");
+
+    const isDateType =
+        type === "date" || type === "datetime-local" || type === "time";
+
+    const showClearButton =
+        !isDateType && !disabled && !!value && onClear && String(value).length > 0;
 
     return (
-        <div className={`flex flex-col gap-1 w-full ${className}`}>
+        <div
+            className={`flex flex-col gap-1 w-full ${className}`}
+            onClick={(e) => {
+                const input =
+                    (e.currentTarget.querySelector("input") as HTMLInputElement) || null;
+                if (input && !disabled && isDateType) input.showPicker?.();
+            }}
+        >
             {label && (
                 <label
                     htmlFor={name}
@@ -52,27 +86,51 @@ export default function Input({
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
-            w-full h-[48px] rounded-sm px-4 pr-10 text-[16px]
+            w-full h-[48px] rounded-sm px-4 ${isDateType ? "pr-4" : "pr-10"
+                        } text-[16px]
             bg-mauve-light-1 dark:bg-mauve-dark-2
             border text-text-primary-light dark:text-text-primary-dark
             placeholder:text-mauve-light-10 dark:placeholder:text-mauve-dark-10
-            focus:outline-none transition-colors duration-200
+            focus:outline-none transition-colors duration-200 cursor-pointer
             ${showError
                             ? "border-red-500 focus:border-red-500"
                             : "border-mauve-light-6 dark:border-mauve-dark-5 focus:border-primary-light-9 dark:focus:border-primary-dark-7"
                         }
+            [&::-webkit-calendar-picker-indicator]:opacity-100
+            [&::-webkit-calendar-picker-indicator]:invert-[1]
+            [&::-webkit-calendar-picker-indicator]:cursor-pointer
           `}
                 />
 
-                {icon && (
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark">
-                        {icon}
+                {!isDateType && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onClear?.();
+                            }}
+                            className={`transition-all duration-200 ease-in-out ${showClearButton
+                                ? "opacity-100 scale-100 pointer-events-auto"
+                                : "opacity-0 scale-75 pointer-events-none"
+                                } text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500`}
+                        >
+                            <X className="w-4 h-4" />
+                        </button>
+
+                        {!showClearButton && icon && (
+                            <div className="text-text-secondary-light dark:text-text-secondary-dark transition-opacity duration-200 opacity-100 pointer-events-none">
+                                {icon}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
 
             {showError && (
-                <span className="text-[13px] text-red-500 mt-1">Preencha este campo</span>
+                <span className="text-[13px] text-red-500 mt-1">
+                    Preencha este campo
+                </span>
             )}
         </div>
     );

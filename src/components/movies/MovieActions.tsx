@@ -21,7 +21,9 @@ export default function MovieActions() {
                     label=""
                     value={filters.search}
                     onChange={(e) => handleChangeInput(e, setFilters)}
+                    onClear={() => setFilters((prev) => ({ ...prev, search: "" }))}
                     icon={<Search className="w-5 h-5" />}
+                    type="text"
                 />
             </div>
 
