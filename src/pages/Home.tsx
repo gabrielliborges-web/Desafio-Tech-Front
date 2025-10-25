@@ -22,7 +22,7 @@ export default function Home() {
     return (
         <main className="flex flex-col gap-6 px-8 max-w-8xl mx-auto w-full">
             <MovieActions />
-            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-4">
+            <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-4">
                 {currentMovies.map((movie) => (
                     <div
                         key={movie.id}
