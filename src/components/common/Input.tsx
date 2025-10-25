@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-
 interface InputProps {
     label?: string;
     placeholder?: string;
@@ -16,7 +15,7 @@ interface InputProps {
 export default function Input({
     label,
     placeholder,
-    value = "",
+    value,
     onChange,
     type = "text",
     disabled = false,
@@ -24,7 +23,7 @@ export default function Input({
     icon,
     className = "",
 }: InputProps) {
-    const showError = required && !value.trim();
+    const showError = required && !value?.trim();
 
     return (
         <div className={`flex flex-col gap-1 w-full ${className}`}>
@@ -42,8 +41,9 @@ export default function Input({
             <div className="relative w-full">
                 <input
                     type={type}
-                    value={value}
-                    onChange={onChange}
+                    {...(onChange
+                        ? { value: value ?? "", onChange }
+                        : { defaultValue: value ?? "" })}
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
@@ -58,6 +58,7 @@ export default function Input({
                         }
           `}
                 />
+
                 {icon && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark">
                         {icon}
@@ -66,9 +67,7 @@ export default function Input({
             </div>
 
             {showError && (
-                <span className="text-[13px] text-red-500 mt-1">
-                    Preencha este campo
-                </span>
+                <span className="text-[13px] text-red-500 mt-1">Preencha este campo</span>
             )}
         </div>
     );
