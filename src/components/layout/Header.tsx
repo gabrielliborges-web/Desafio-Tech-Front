@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import Button from "../common/Button";
-import Logo from "../../assets/Title.png";
+import LogoSm from "../../assets/LogoSm.png";
+import LogoLg from "../../assets/LogoLg.png";
 
 export default function Header() {
     const [isDark, setIsDark] = useState(false);
@@ -17,7 +18,17 @@ export default function Header() {
         <header className="w-full h-[72px] bg-background-dark border-b border-b-border-subtle/20 flex items-center justify-between px-8 font-montserrat transition-colors duration-300">
 
             <div className="flex items-center gap-2">
-                <img src={Logo} alt="Cubos Movies" className="h-[32px]" />
+                <img
+                    src={LogoSm}
+                    alt="Cubos Movies"
+                    className="h-[32px] block md:hidden"
+                />
+
+                <img
+                    src={LogoLg}
+                    alt="Cubos Movies"
+                    className="h-[32px] hidden md:block"
+                />
             </div>
 
             <div className="flex items-center gap-3">
