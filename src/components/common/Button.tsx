@@ -18,20 +18,27 @@ export default function Button({
 
     const variants = {
         primary: `
-      bg-primary-light-9 hover:bg-primary-light-10 active:bg-primary-light-8 text-white
-      dark:bg-primary-dark-7 dark:hover:bg-primary-dark-8 dark:active:bg-primary-dark-6 dark:text-white
-      disabled:bg-mauve-light-7 dark:disabled:bg-mauve-dark-9
+      bg-primary-dark-7 
+      hover:bg-primary-dark-8 
+      active:bg-primary-dark-6 
+      disabled:bg-mauve-dark-9 
+      text-white
     `,
         secondary: `
-      bg-mauve-light-9 hover:bg-mauve-light-10 active:bg-mauve-light-8 text-text-primary-light
-      dark:bg-mauve-dark-2 dark:hover:bg-mauve-dark-3 dark:active:bg-mauve-dark-4 dark:text-white
-      disabled:bg-mauve-light-6 dark:disabled:bg-mauve-dark-5
+      bg-mauve-dark-2 
+      hover:bg-mauve-dark-3 
+      active:bg-mauve-dark-4 
+      disabled:bg-mauve-dark-5 
+      text-white
     `,
         icon: `
-      bg-mauve-light-10 hover:bg-mauve-light-11 active:bg-mauve-light-12 text-white
-      dark:bg-mauve-dark-2 dark:hover:bg-mauve-dark-3 dark:active:bg-mauve-dark-4 dark:text-white
-      dark:disabled:bg-mauve-dark-6 disabled:bg-mauve-light-8
-      w-[44px] h-[44px] flex items-center justify-center
+      bg-mauve-dark-2 
+      hover:bg-mauve-dark-3 
+      active:bg-mauve-dark-4 
+      disabled:bg-mauve-dark-5 
+      w-[44px] h-[44px] 
+      flex items-center justify-center 
+      text-white
     `,
     };
 
