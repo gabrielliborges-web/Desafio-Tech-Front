@@ -18,7 +18,7 @@ export function handleChangeInput<T extends object>(
     case "date":
     case "datetime-local":
     case "time":
-      newValue = value ? new Date(value) : null;
+      newValue = value || "";
       break;
     case "file":
       newValue =

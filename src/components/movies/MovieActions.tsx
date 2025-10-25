@@ -2,15 +2,37 @@ import { useState } from "react";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import { Search } from "lucide-react";
-import { handleChangeInput } from "../../utils/handleChangeInput";
 import Modal from "../common/Modal";
+import FormsFields, { type Field, buildInitialValues } from "../common/FormsFields";
 
 export default function MovieActions() {
-    const [filters, setFilters] = useState({
-        search: "",
-    });
+    const fields: Field[] = [
+        { internalName: "search", label: "Título", type: "Text", value: "", colSpan: 6 },
+        { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 6 },
 
+        { internalName: "releaseDateStart", label: "Lançamento (De)", type: "DateTime", value: "", colSpan: 6 },
+        { internalName: "releaseDateEnd", label: "Lançamento (Até)", type: "DateTime", value: "", colSpan: 6 },
+
+        { internalName: "minDuration", label: "Duração Mínima", type: "Number", value: "", colSpan: 6 },
+        { internalName: "maxDuration", label: "Duração Máxima", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "minBudget", label: "Orçamento Mínimo", type: "Number", value: "", colSpan: 6 },
+        { internalName: "maxBudget", label: "Orçamento Máximo", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "status", label: "Status", type: "Choice", options: ["DRAFT", "PUBLISHED"], value: "", colSpan: 6 },
+        { internalName: "visibility", label: "Visibilidade", type: "Choice", options: ["PRIVATE", "PUBLIC"], value: "", colSpan: 6 },
+
+        { internalName: "userId", label: "Usuário Responsável", type: "Text", value: "", colSpan: 12 },
+
+        { internalName: "createdAtStart", label: "Criado em (De)", type: "DateTime", value: "", colSpan: 6 },
+        { internalName: "createdAtEnd", label: "Criado em (Até)", type: "DateTime", value: "", colSpan: 6 },
+    ];
+
+
+    const [filters, setFilters] = useState(buildInitialValues(fields));
     const [open, setOpen] = useState(false);
+
+    console.log(filters)
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
@@ -20,7 +42,9 @@ export default function MovieActions() {
                     placeholder="Pesquise por filmes"
                     label=""
                     value={filters.search}
-                    onChange={(e) => handleChangeInput(e, setFilters)}
+                    onChange={(e) =>
+                        setFilters((prev) => ({ ...prev, search: e.target.value }))
+                    }
                     onClear={() => setFilters((prev) => ({ ...prev, search: "" }))}
                     icon={<Search className="w-5 h-5" />}
                     type="text"
@@ -44,7 +68,7 @@ export default function MovieActions() {
             </div>
 
             <Modal
-                title="Filtros"
+                title="Filtros Avançados"
                 open={open}
                 onClose={() => setOpen(false)}
                 footer={
@@ -56,19 +80,7 @@ export default function MovieActions() {
                     </>
                 }
             >
-                <div className="border border-red-600/40 rounded-md p-4 text-sm">
-                    <p className="text-center mb-2 font-medium text-yellow-400">
-                        ⚠️ Substitua essa seção pelos filtros ⚠️
-                    </p>
-                    <p className="mb-2">
-                        Este espaço é designado para os filtros que podem ser definidos para
-                        facilitar a pesquisa por um filme específico.
-                    </p>
-                    <p>
-                        É importante ressaltar que o design do formulário deve estar em
-                        harmonia com a identidade visual do restante do site.
-                    </p>
-                </div>
+                <FormsFields fields={fields} values={filters} setValues={setFilters} />
             </Modal>
         </section>
     );
