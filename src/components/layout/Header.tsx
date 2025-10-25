@@ -1,15 +1,46 @@
+import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
+import Button from "../common/Button";
+import Logo from "../../assets/Title.png";
+
 export default function Header() {
+    const [isDark, setIsDark] = useState(false);
+
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (isDark) root.classList.add("dark");
+        else root.classList.remove("dark");
+    }, [isDark]);
+
     return (
-        <header className="flex items-center justify-between px-8 py-4 bg-neutral-900 border-b border-neutral-800">
-            <div className="text-xl font-bold text-white tracking-wide">
-                <span className="text-purple-400">CUBOS</span> Movies
+        <header className="w-full h-[72px] bg-background-dark border-b border-b-border-subtle/20 flex items-center justify-between px-8 font-montserrat transition-colors duration-300">
+
+            <div className="flex items-center gap-2">
+                <img src={Logo} alt="Cubos Movies" className="h-[32px]" />
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+                <Button
+                    variant="icon"
+                    onClick={() => setIsDark((prev) => !prev)}
+                    className="relative overflow-hidden transition-all duration-500"
+                >
+                    <span
+                        className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${isDark ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
+                            }`}
+                    >
+                        <Sun className="w-5 h-5 text-white" />
+                    </span>
+                    <span
+                        className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${isDark ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"
+                            }`}
+                    >
+                        <Moon className="w-5 h-5 text-white" />
+                    </span>
+                </Button>
 
-                <button className="bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded text-white">
-                    Logout
-                </button>
+                <Button variant="primary">Logout</Button>
             </div>
         </header>
     );
