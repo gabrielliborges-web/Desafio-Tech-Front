@@ -8,7 +8,7 @@ export default function Header() {
     const { isDark, toggleTheme } = useTheme();
 
     return (
-        <header className="w-full h-[68px] bg-background-light dark:bg-background-dark border-b border-border-subtle/20 flex items-center justify-between px-8 font-montserrat transition-colors duration-300">
+        <header className="w-full h-[68px] bg-mauve-light-12/90 dark:bg-background-dark/95 backdrop-blur-sm border-b border-border-subtle/20 flex items-center justify-between px-8 font-montserrat transition-colors duration-300">
             <div className="flex items-center gap-2">
                 <img src={LogoSm} alt="Cubos Movies" className="h-[32px] block md:hidden" />
                 <img src={LogoLg} alt="Cubos Movies" className="h-[32px] hidden md:block" />
@@ -37,6 +37,7 @@ export default function Header() {
                         <Moon className="w-5 h-5 text-white" />
                     </span>
                 </Button>
+                <Button variant="primary">Logout</Button>
             </div>
         </header>
     );
