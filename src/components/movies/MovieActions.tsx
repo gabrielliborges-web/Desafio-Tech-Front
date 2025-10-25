@@ -7,8 +7,8 @@ import FormsFields, { type Field, buildInitialValues } from "../common/FormsFiel
 
 export default function MovieActions() {
     const fields: Field[] = [
-        { internalName: "search", label: "Título", type: "Text", value: "", colSpan: 6 },
-        { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 6 },
+        { internalName: "search", label: "Busca Geral", type: "Text", value: "", colSpan: 12 },
+        { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 12 },
 
         { internalName: "releaseDateStart", label: "Lançamento (De)", type: "DateTime", value: "", colSpan: 6 },
         { internalName: "releaseDateEnd", label: "Lançamento (Até)", type: "DateTime", value: "", colSpan: 6 },
@@ -28,11 +28,8 @@ export default function MovieActions() {
         { internalName: "createdAtEnd", label: "Criado em (Até)", type: "DateTime", value: "", colSpan: 6 },
     ];
 
-
     const [filters, setFilters] = useState(buildInitialValues(fields));
     const [open, setOpen] = useState(false);
-
-    console.log(filters)
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
