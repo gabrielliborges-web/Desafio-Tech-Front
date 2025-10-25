@@ -104,3 +104,5 @@ theme: {
 },
 
 ```
+## 📘 Modelagem do Banco de Dados
+![Movies Models](./src/assets/movies_models.png)
