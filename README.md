@@ -1,73 +1,106 @@
-# React + TypeScript + Vite
+## 🧱 Estrutura Inicial do Projeto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto foi iniciado com **React + TypeScript + TailwindCSS**, seguindo uma arquitetura modular e organizada desde o primeiro commit.  
+A estrutura foi planejada para garantir escalabilidade, reutilização de componentes e padronização visual desde o início.
 
-Currently, two official plugins are available:
+### 📂 Estrutura de Pastas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+src/
+├── components/
+│ ├── layout/
+│ │ ├── AppLayout.tsx
+│ │ ├── Header.tsx
+│ │ ├── Footer.tsx
+│ ├── movies/
+│ │ ├── MoviesGrid.tsx
+│ │ ├── MovieCard.tsx
+│ │ ├── RatingCircle.tsx
+│ │ ├── Pagination.tsx
+│ ├── filters/
+│ │ ├── FiltersModal.tsx
+│ ├── common/
+│ │ ├── SearchBar.tsx
+│ │ ├── Button.tsx
+│ │ ├── Modal.tsx
+│ │ ├── Icon.tsx
+├── pages/
+│ ├── Home.tsx
+│ ├── MovieDetails.tsx
+│ ├── AddMovie.tsx
+├── App.tsx
+├── main.tsx
 
-## React Compiler
+Essa estrutura foi definida para separar claramente:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **layout/** → estrutura base (Header, Footer, AppLayout)
+- **movies/** → componentes específicos de filmes
+- **filters/** → modais e filtros dinâmicos
+- **common/** → componentes genéricos e reutilizáveis (botões, modais, etc.)
+- **pages/** → telas principais da aplicação
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🎨 Configuração do TailwindCSS
+
+O projeto utiliza **TailwindCSS** com configuração personalizada para refletir a paleta do Figma e suportar **modo claro/escuro**.
+
+### ⚙️ Configuração base (`tailwind.config.js`)
 
 ```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+darkMode: "class",
+theme: {
+  extend: {
+    colors: {
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
+      primary: {
+        DEFAULT: "#8B5CF6",
+        50: "#F5EEFF",
+        100: "#EDE3FF",
+        200: "#D9C6FF",
+        300: "#C4A8FF",
+        400: "#A678FF",
+        500: "#8B5CF6",
+        600: "#7B4DE6",
+        700: "#6B3DD6",
+        800: "#5A2DC6",
+        900: "#4A1DB6",
       },
-      // other options...
+      mauve: {
+        DEFAULT: "#1A1523",
+        50: "#F4F2F6",
+        100: "#E6E2EB",
+        200: "#C9C1D0",
+        300: "#ADA6B7",
+        400: "#8F8A9E",
+        500: "#706F85",
+        600: "#5A536C",
+        700: "#433754",
+        800: "#2D1B3B",
+        900: "#1A1523",
+      },
+      background: {
+        dark: "#0E0E0E",
+        light: "#FFFFFF",
+      },
+      border: {
+        subtle: "#F1E6FD",
+        subtle20: "#F1E6FD30",
+      },
+      text: {
+        primary: {
+          dark: "#FFFFFF",
+          light: "#1A1523",
+        },
+        secondary: {
+          dark: "#B5B2BC",
+          light: "#706F85",
+        },
+      },
+    },
+    fontFamily: {
+      montserrat: ["Montserrat", "sans-serif"],
     },
   },
-])
-```
+},
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
