@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 interface InputProps {
+    name?: string;
     label?: string;
     placeholder?: string;
     value?: string;
@@ -13,6 +14,7 @@ interface InputProps {
 }
 
 export default function Input({
+    name,
     label,
     placeholder,
     value,
@@ -29,6 +31,7 @@ export default function Input({
         <div className={`flex flex-col gap-1 w-full ${className}`}>
             {label && (
                 <label
+                    htmlFor={name}
                     className={`text-sm font-medium transition-colors duration-200 ${showError
                         ? "text-red-500"
                         : "text-text-secondary-light dark:text-text-secondary-dark"
@@ -40,6 +43,8 @@ export default function Input({
 
             <div className="relative w-full">
                 <input
+                    id={name}
+                    name={name}
                     type={type}
                     {...(onChange
                         ? { value: value ?? "", onChange }
