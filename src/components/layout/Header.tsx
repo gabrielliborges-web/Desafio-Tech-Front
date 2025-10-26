@@ -1,15 +1,39 @@
 import { Sun, Moon } from "lucide-react";
 import Button from "../common/Button";
 import { useTheme } from "../../hooks/useTheme";
+import { useNavigate, useLocation } from "react-router-dom";
 import LogoSm from "../../assets/LogoSm.png";
 import LogoLg from "../../assets/LogoLg.png";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
     const { isDark, toggleTheme } = useTheme();
+    const { isAuthenticated, logout } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isLogin = location.pathname === "/login";
+    const isSignup = location.pathname === "/signup";
+
+    const handleAction = () => {
+        if (isAuthenticated) {
+            logout();
+        } else if (isLogin) {
+            navigate("/signup");
+        } else if (isSignup) {
+            navigate("/login");
+        }
+    };
+
+    const buttonLabel = isAuthenticated
+        ? "Logout"
+        : isLogin
+            ? "Cadastrar"
+            : "Login";
 
     return (
         <header className="w-full h-[68px] bg-mauve-light-12/90 dark:bg-background-dark/95 backdrop-blur-sm border-b border-border-subtle/20 flex items-center justify-between px-8 font-montserrat transition-colors duration-300">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
                 <img src={LogoSm} alt="Cubos Movies" className="h-[32px] block md:hidden" />
                 <img src={LogoLg} alt="Cubos Movies" className="h-[32px] hidden md:block" />
             </div>
@@ -37,7 +61,9 @@ export default function Header() {
                         <Moon className="w-5 h-5 text-white" />
                     </span>
                 </Button>
-                <Button variant="primary">Logout</Button>
+                <Button variant="primary" onClick={handleAction}>
+                    {buttonLabel}
+                </Button>
             </div>
         </header>
     );
