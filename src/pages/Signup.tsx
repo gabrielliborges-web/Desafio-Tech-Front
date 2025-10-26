@@ -12,7 +12,7 @@ export default function Signup() {
         {
             internalName: "name",
             label: "Nome completo",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,
@@ -20,7 +20,7 @@ export default function Signup() {
         {
             internalName: "email",
             label: "E-mail",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,
@@ -28,7 +28,7 @@ export default function Signup() {
         {
             internalName: "password",
             label: "Senha",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,
@@ -36,7 +36,7 @@ export default function Signup() {
         {
             internalName: "theme",
             label: "Tema Preferido",
-            type: "Choice",
+            type: "choice",
             options: ["LIGHT", "DARK"],
             value: "",
             colSpan: 12,
