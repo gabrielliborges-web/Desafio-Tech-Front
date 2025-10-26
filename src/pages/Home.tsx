@@ -11,7 +11,7 @@ export default function Home() {
 
     const movies = Array.from({ length: 95 }, (_, i) => ({
         id: i + 1,
-        imageUrl:
+        imageCover:
             i % 3 === 0
                 ? capitaoMarvel
                 : movies_models,
@@ -42,7 +42,7 @@ export default function Home() {
                                 key={m.id}
                                 title={m.title}
                                 description={m.description}
-                                imageUrl={m.imageUrl}
+                                imageCover={m.imageCover}
                                 rating={m.rating}
                                 linkPreview={m.linkPreview}
                             />

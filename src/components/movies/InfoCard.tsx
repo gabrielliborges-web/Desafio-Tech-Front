@@ -1,15 +1,32 @@
 interface InfoCardProps {
     title: string;
     content: React.ReactNode;
+    compact?: boolean;
+    className?: string;
 }
 
-export default function InfoCard({ title, content }: InfoCardProps) {
+export default function InfoCard({
+    title,
+    content,
+    compact = false,
+    className = "", 
+}: InfoCardProps) {
     return (
-        <div className="bg-[#232225]/60  blur-[0.5px] border border-[#ebeaf8]/[0.08] rounded-md p-4 flex flex-col gap-2">
-            <h3 className="text-sm font-semibold text-text-primary-dark uppercase">
+        <div
+            className={`
+        ${compact ? "px-4 py-2" : "p-4"}
+        bg-mauve-dark-3 opacity-80 rounded-sm
+        flex flex-col justify-center
+        overflow-hidden break-words
+        ${className}
+      `}
+        >
+            <p className="text-xs text-gray-400 uppercase tracking-wide truncate">
                 {title}
-            </h3>
-            <div className="text-sm text-gray-300">{content}</div>
+            </p>
+            <p className="font-semibold text-white text-sm break-words whitespace-pre-wrap overflow-hidden text-ellipsis">
+                {content}
+            </p>
         </div>
     );
 }
