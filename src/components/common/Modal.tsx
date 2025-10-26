@@ -23,10 +23,9 @@ export default function Modal({
         <div
             data-open={open}
             className={clsx(
-                "fixed inset-0 z-50 flex items-center justify-center",
-                "transition-all duration-500 ease-in-out",
-                "bg-black/0 opacity-0 pointer-events-none",
-                "data-[open=true]:bg-black/60 data-[open=true]:opacity-100 data-[open=true]:pointer-events-auto"
+                "fixed inset-0 z-50 flex items-center justify-center bg-modal-overlay",
+                "opacity-0 pointer-events-none transition-all duration-500",
+                "data-[open=true]:opacity-100 data-[open=true]:pointer-events-auto"
             )}
         >
             <div
@@ -42,7 +41,6 @@ export default function Modal({
                     className
                 )}
             >
-                {/* HEADER */}
                 <div className="flex items-center justify-between border-b border-border-subtle/20 px-5 py-4 flex-shrink-0">
                     <h2 className="text-lg font-semibold text-text-primary-dark">{title}</h2>
                     <button
@@ -53,7 +51,6 @@ export default function Modal({
                     </button>
                 </div>
 
-                {/* CONTENT (scroll estilizado) */}
                 <div
                     className={clsx(
                         "px-5 py-4 text-text-secondary-dark overflow-y-auto flex-1",
@@ -64,7 +61,6 @@ export default function Modal({
                     {children}
                 </div>
 
-                {/* FOOTER */}
                 {footer && (
                     <div className="flex justify-end gap-3 px-5 py-4 border-t border-border-subtle/20 flex-shrink-0">
                         {footer}
