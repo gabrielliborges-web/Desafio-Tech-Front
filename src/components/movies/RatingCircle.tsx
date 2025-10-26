@@ -4,7 +4,6 @@ interface RatingCircleProps {
     rating: number;
     size?: number;
     strokeWidth?: number;
-    color?: string;
     bgColor?: string;
     duration?: number;
     className?: string;
@@ -13,8 +12,7 @@ interface RatingCircleProps {
 export default function RatingCircle({
     rating,
     size = 90,
-    strokeWidth = 3,
-    color = "#facc15",
+    strokeWidth = 8,
     bgColor = "#1e1e1e",
     duration = 1.2,
     className = "",
@@ -23,10 +21,21 @@ export default function RatingCircle({
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (rating / 100) * circumference;
 
+    const color =
+        rating < 50
+            ? "#ef4444"
+            : rating < 75
+                ? "#facc15"
+                : "#22c55e";
+
     return (
         <div
-            className={`relative flex items-center justify-center ${className}`}
-            style={{ width: size, height: size }}
+            className={`relative flex items-center justify-center rounded-full overflow-hidden ${className}`}
+            style={{
+                width: size,
+                height: size,
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+            }}
         >
             <svg
                 width={size}
@@ -34,7 +43,6 @@ export default function RatingCircle({
                 viewBox={`0 0 ${size} ${size}`}
                 className="absolute"
             >
-
                 <circle
                     cx={size / 2}
                     cy={size / 2}
@@ -43,7 +51,6 @@ export default function RatingCircle({
                     strokeWidth={strokeWidth}
                     fill="none"
                 />
-
 
                 <motion.circle
                     cx={size / 2}
@@ -61,8 +68,13 @@ export default function RatingCircle({
                 />
             </svg>
 
-
-            <span className="absolute text-lg font-semibold text-yellow-400 select-none">
+            <span
+                className="absolute font-semibold select-none"
+                style={{
+                    color,
+                    fontSize: size * 0.22,
+                }}
+            >
                 {Math.round(rating)}%
             </span>
         </div>

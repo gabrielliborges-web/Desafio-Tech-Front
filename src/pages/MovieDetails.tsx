@@ -219,8 +219,7 @@ export default function MovieDetails() {
                                     <RatingCircle
                                         rating={movie.rating}
                                         size={70}
-                                        strokeWidth={3}
-                                        color="#facc15"
+                                        strokeWidth={5}
                                         bgColor="#1e1e1e"
                                         className="shrink-0"
                                     />
