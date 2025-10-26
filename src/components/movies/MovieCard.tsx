@@ -62,7 +62,7 @@ export default function MovieCard({
                 setHover(false);
                 setShowPreview(false);
             }}
-            className="relative w-[235px] h-[355px] rounded-md overflow-hidden bg-[#111] cursor-pointer group transition-all duration-300"
+            className="relative w-full max-w-[235px] h-[355px] rounded-md overflow-hidden bg-[#111] cursor-pointer group transition-all duration-300"
         >
             {showPreview && linkPreview ? (
                 isYouTube ? (

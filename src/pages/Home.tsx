@@ -32,7 +32,20 @@ export default function Home() {
         <main className="flex flex-col gap-8 px-8 max-w-8xl mx-auto w-full pb-10">
             <MovieActions />
 
-            <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-4 place-items-center">
+            <section
+                className="
+      grid 
+      grid-cols-2 
+      xs:grid-cols-2 
+      sm:grid-cols-2 
+      md:grid-cols-3 
+      lg:grid-cols-4 
+      xl:grid-cols-5 
+      gap-6 
+      mt-4 
+      place-items-center
+    "
+            >
                 {currentMovies.map((m) => (
                     <MovieCard key={m.id} {...m} />
                 ))}
