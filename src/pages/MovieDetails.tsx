@@ -4,10 +4,42 @@ import Bumble from "../assets/imageCAPA.jpg";
 import bumblebee from "../assets/bumblebee.png";
 import RatingCircle from "../components/movies/RatingCircle";
 import { getYouTubeId } from "../utils/pathVideo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../components/common/Modal";
+import Drawer from "../components/common/Drawer";
+import FormsFields, { type Field } from "../components/common/FormsFields";
 
 export default function MovieDetails() {
+
+    const fieldsCreateMovie: Field[] = [
+        { internalName: "title", label: "Título", type: "Text", value: "", required: true, colSpan: 12 },
+        { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 12 },
+        { internalName: "description", label: "Descrição", type: "Text", value: "", colSpan: 12 },
+
+        { internalName: "releaseDate", label: "Data de Lançamento", type: "DateTime", value: "", colSpan: 6 },
+        { internalName: "duration", label: "Duração (minutos)", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "imageUrl", label: "URL da Capa", type: "Text", value: "", colSpan: 12 },
+        { internalName: "linkPreview", label: "Link do Trailer/Teaser", type: "Text", value: "", colSpan: 12 },
+
+        { internalName: "actors", label: "Atores", type: "UserMulti", value: [], colSpan: 12 },
+        { internalName: "director", label: "Diretor", type: "User", value: '', colSpan: 12 },
+        { internalName: "producers", label: "Produtores", type: "UserMulti", value: [], colSpan: 12 },
+
+
+        { internalName: "language", label: "Idioma", type: "Text", value: "", colSpan: 6 },
+        { internalName: "country", label: "País", type: "Text", value: "", colSpan: 6 },
+
+        { internalName: "budget", label: "Orçamento (USD)", type: "Number", value: "", colSpan: 4 },
+        { internalName: "revenue", label: "Receita (USD)", type: "Number", value: "", colSpan: 4 },
+        { internalName: "profit", label: "Lucro (USD)", type: "Number", value: "", colSpan: 4 },
+
+        { internalName: "ratingAvg", label: "Avaliação Média (%)", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "status", label: "Status", type: "Choice", required: true, options: ["DRAFT", "PUBLISHED"], value: "", colSpan: 6 },
+        { internalName: "visibility", label: "Visibilidade", type: "Choice", required: true, options: ["PRIVATE", "PUBLIC"], value: "", colSpan: 6 },
+    ];
+
     const movie = {
         id: "a8bdf3d5-25b7-4c3e-9134-2f62d8e8f9b4",
         title: "Bumblebee",
@@ -15,7 +47,7 @@ export default function MovieDetails() {
         originalTitle: "Bumblebee",
         description:
             "“Bumblebee” é um filme que se passa em 1987 e conta a história do Autobot chamado Bumblebee que encontra refúgio em um ferro-velho numa pequena cidade praiana da Califórnia. Charlie, uma adolescente prestes a completar 18 anos, encontra Bumblebee machucado e sem condições de uso. Quando ela o revive, percebe que este não é qualquer fusca amarelo.",
-        releaseDate: new Date("2018-12-20"),
+        releaseDate: `${new Date("2018-12-20")}`,
         duration: 113,
         indicativeRating: 13,
         imageCover: bumblebee,
@@ -39,8 +71,8 @@ export default function MovieDetails() {
         profit: 332990000.0,
         ratingAvg: 6.7,
         status: "RELEASED",
-        visibility: "PUBLIC",
-        userId: "user_123456",
+        visibility: "PRIVATE",
+        userId: "1",
         user: {
             id: "user_123456",
             name: "Gabrielli Borges",
@@ -71,12 +103,35 @@ export default function MovieDetails() {
         rating: 95,
     };
 
+    const currentUser = {
+        id: "1",
+        name: "Gabrielli Borges",
+    };
+
+
+    const [movieData, setMovieData] = useState(movie);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openEditDrawer, setOpenEditDrawer] = useState(false);
 
     const handleDelete = () => {
         console.log("Filme deletado com sucesso!");
         setOpenDeleteModal(false);
     };
+
+    const handleSave = () => {
+        console.log("Filme atualizado:", movieData);
+        setOpenEditDrawer(false);
+    };
+
+    useEffect(() => {
+        setMovieData({
+            ...movie,
+            releaseDate: movie.releaseDate
+                ? new Date(movie.releaseDate).toISOString().split("T")[0]
+                : "",
+        });
+    }, []);
+
 
     return (
         <main className="relative w-full min-h-screen text-white overflow-hidden">
@@ -102,7 +157,7 @@ export default function MovieDetails() {
                 </div>
 
                 <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 order-2">
-                    <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
+                    {movie.userId === currentUser.id && <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
                         <Button
                             variant="secondary"
                             className="h-[40px] w-[30%] md:w-[90px] text-sm md:text-base"
@@ -113,10 +168,11 @@ export default function MovieDetails() {
                         <Button
                             variant="primary"
                             className="h-[40px] w-[70%] md:w-[120px] text-sm md:text-base"
+                            onClick={() => setOpenEditDrawer(true)}
                         >
                             Editar
                         </Button>
-                    </div>
+                    </div>}
 
                     <div className="order-2 md:order-1 text-center md:text-left w-full md:w-auto">
                         <h1 className="text-3xl md:text-4xl font-bold">{movie.title}</h1>
@@ -288,6 +344,27 @@ export default function MovieDetails() {
                 </div>
             </Modal>
 
+            <Drawer
+                title={`Editar Filme — ${movie.title}`}
+                open={openEditDrawer}
+                onClose={() => setOpenEditDrawer(false)}
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={() => setOpenEditDrawer(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" onClick={handleSave}>
+                            Salvar
+                        </Button>
+                    </>
+                }
+            >
+                <FormsFields
+                    fields={fieldsCreateMovie}
+                    values={movieData}
+                    setValues={setMovieData}
+                />
+            </Drawer>
         </main>
     );
 }
