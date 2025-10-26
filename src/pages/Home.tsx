@@ -40,7 +40,8 @@ export default function Home() {
             <div className="relative z-10 max-w-8xl mx-auto w-full px-4 sm:px-6 md:px-8 flex flex-col gap-8 py-6">
                 <MovieActions />
 
-                <div className="bg-[#ebeaf8]/[0.08] backdrop-blur-sm rounded-md p-6 sm:p-8">
+                <div className="bg-[#ebeaf8]/[0.05] rounded-md p-6 sm:p-8 border border-[#ebeaf8]/[0.08]">
+
                     <section className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
                         {currentMovies.map((m) => (
                             <MovieCard
@@ -49,6 +50,7 @@ export default function Home() {
                                 description={m.description}
                                 imageUrl={m.imageUrl}
                                 rating={m.rating}
+                                linkPreview={m.linkPreview}
                             />
                         ))}
                     </section>

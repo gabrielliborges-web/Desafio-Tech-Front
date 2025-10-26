@@ -43,7 +43,7 @@ export default function MovieCard({
 
     useEffect(() => {
         if (hover && linkPreview) {
-            const timer = setTimeout(() => setShowPreview(true), 1000);
+            const timer = setTimeout(() => setShowPreview(true), 2000);
             setHoverTimer(timer);
         } else {
             setShowPreview(false);
@@ -54,6 +54,7 @@ export default function MovieCard({
             if (hoverTimer) clearTimeout(hoverTimer);
         };
     }, [hover, linkPreview]);
+
 
     return (
         <motion.div
@@ -66,22 +67,43 @@ export default function MovieCard({
         >
             {showPreview && linkPreview ? (
                 isYouTube ? (
-                    <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(linkPreview)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(linkPreview)}`}
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
+                    <div className="absolute inset-0 z-20 overflow-hidden">
+                        <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(
+                                linkPreview
+                            )}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(
+                                linkPreview
+                            )}`}
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                            className="absolute inset-0 w-full h-full object-cover z-20"
+                            style={{
+                                transform: "translateZ(0)",
+                                willChange: "transform",
+                                backfaceVisibility: "hidden",
+                            }}
+                        />
+
+                        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-10" />
+                    </div>
                 ) : (
-                    <video
-                        src={linkPreview}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        crossOrigin="anonymous"
-                        className="w-full h-full object-cover"
-                    />
+                    <div className="absolute inset-0 z-20 overflow-hidden">
+                        <video
+                            src={linkPreview}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            crossOrigin="anonymous"
+                            className="absolute inset-0 w-full h-full object-cover z-20"
+                            style={{
+                                transform: "translateZ(0)",
+                                willChange: "transform",
+                                backfaceVisibility: "hidden",
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-10" />
+                    </div>
                 )
             ) : (
                 <img
