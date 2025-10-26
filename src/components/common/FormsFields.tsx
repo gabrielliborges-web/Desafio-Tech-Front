@@ -7,6 +7,7 @@ export interface Field {
     label?: string;
     type:
     | "Text"
+    | "Password"
     | "Number"
     | "Choice"
     | "DateTime" | "date"
@@ -65,6 +66,17 @@ export default function FormsFields<T extends Record<string, any>>({
                                 <Input {...commonProps} placeholder={field.label} />
                             </div>
                         );
+                    case "Password":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <Input
+                                    {...commonProps}
+                                    type="password"
+                                    placeholder={field.label}
+                                />
+                            </div>
+                        );
+
 
                     case "Number":
                         return (
