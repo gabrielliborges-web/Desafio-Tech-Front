@@ -4,6 +4,8 @@ import Bumble from "../assets/imageCAPA.jpg";
 import bumblebee from "../assets/bumblebee.png";
 import RatingCircle from "../components/movies/RatingCircle";
 import { getYouTubeId } from "../utils/pathVideo";
+import { useState } from "react";
+import Modal from "../components/common/Modal";
 
 export default function MovieDetails() {
     const movie = {
@@ -69,7 +71,12 @@ export default function MovieDetails() {
         rating: 95,
     };
 
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
+    const handleDelete = () => {
+        console.log("Filme deletado com sucesso!");
+        setOpenDeleteModal(false);
+    };
 
     return (
         <main className="relative w-full min-h-screen text-white overflow-hidden">
@@ -85,8 +92,6 @@ export default function MovieDetails() {
                 <div className="absolute inset-0 bg-black/80" />
             </div>
 
-
-
             <section className="relative z-10 w-full max-w-[1440px] mx-auto pt-10">
                 <div className="flex justify-center md:hidden order-1 mb-6">
                     <img
@@ -101,6 +106,7 @@ export default function MovieDetails() {
                         <Button
                             variant="secondary"
                             className="h-[40px] w-[30%] md:w-[90px] text-sm md:text-base"
+                            onClick={() => setOpenDeleteModal(true)}
                         >
                             Deletar
                         </Button>
@@ -227,6 +233,7 @@ export default function MovieDetails() {
                 </div>
 
             </section>
+
             <section className="w-full mt-10 mb-4">
                 <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
 
@@ -255,10 +262,32 @@ export default function MovieDetails() {
                 </div>
             </section>
 
+            <Modal
+                title="Confirmar exclusão"
+                open={openDeleteModal}
+                onClose={() => setOpenDeleteModal(false)}
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={() => setOpenDeleteModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" onClick={handleDelete}>
+                            Confirmar
+                        </Button>
+                    </>
+                }
+            >
+                <div className="p-2">
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                        Tem certeza que deseja deletar o filme{" "}
+                        <span className="font-semibold text-white">"{movie.title}"</span>?
+                    </p>
+                    <p className="text-gray-400 text-xs mt-2">
+                        Esta ação é permanente e não poderá ser desfeita.
+                    </p>
+                </div>
+            </Modal>
+
         </main>
-
-
-
-
     );
 }
