@@ -1,18 +1,27 @@
+import { useState } from "react";
 import MovieActions from "../components/movies/MovieActions";
 import Pagination from "../components/common/Pagination";
-import { useState } from "react";
+import MovieCard from "../components/movies/MovieCard";
 
+import capitaoMarvel from '../assets/capitaoMarvel.png'
+import movies_models from '../assets/bumblebee.png'
 
 export default function Home() {
-
     const [currentPage, setCurrentPage] = useState(1);
 
-    const movies = Array.from({ length: 900 }, (_, i) => ({
+    const movies = Array.from({ length: 95 }, (_, i) => ({
         id: i + 1,
+        imageUrl:
+            i % 3 === 0
+                ? capitaoMarvel
+                : movies_models,
+        linkPreview: "https://www.youtube.com/watch?v=gHpElXQ_roc",
         title: `Filme ${i + 1}`,
-        description: "Descrição do filme...",
-        image: "https://placehold.co/300x450",
+        description:
+            "Um filme emocionante que conta a história de coragem e superação em um universo cheio de ação, drama e aventura. Inspirador e visualmente impressionante.",
+        rating: Math.floor(Math.random() * 100),
     }));
+
 
     const itemsPerPage = 10;
     const totalPages = Math.ceil(movies.length / itemsPerPage);
@@ -20,32 +29,22 @@ export default function Home() {
     const currentMovies = movies.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <main className="flex flex-col gap-6 px-8 max-w-8xl mx-auto w-full">
+        <main className="flex flex-col gap-8 px-8 max-w-8xl mx-auto w-full pb-10">
             <MovieActions />
-            <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-4">
-                {currentMovies.map((movie) => (
-                    <div
-                        key={movie.id}
-                        className="bg-[#1a1a1a] rounded-md overflow-hidden shadow-md hover:scale-[1.02] transition-transform"
-                    >
-                        <img
-                            src={movie.image}
-                            alt={movie.title}
-                            className="w-full h-[220px] object-cover"
-                        />
-                        <div className="p-4">
-                            <h3 className="text-lg font-semibold text-white">{movie.title}</h3>
-                            <p className="text-sm text-gray-400 mt-2">{movie.description}</p>
-                        </div>
-                    </div>
+
+            <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-4 place-items-center">
+                {currentMovies.map((m) => (
+                    <MovieCard key={m.id} {...m} />
                 ))}
             </section>
 
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-            />
+            <div className="flex justify-center mt-6">
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
+            </div>
         </main>
     );
 }
