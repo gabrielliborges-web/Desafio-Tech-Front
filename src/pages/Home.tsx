@@ -10,7 +10,7 @@ import BackgroundMovies from "../assets/Background_movies_opacity.png";
 export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
 
-    const movies = Array.from({ length: 95 }, (_, i) => ({
+    const movies = Array.from({ length: 8888 }, (_, i) => ({
         id: i + 1,
         imageUrl:
             i % 3 === 0
@@ -42,7 +42,7 @@ export default function Home() {
 
                 <div className="bg-[#ebeaf8]/[0.05] rounded-md p-6 sm:p-8 border border-[#ebeaf8]/[0.08]">
 
-                    <section className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+                    <section className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
                         {currentMovies.map((m) => (
                             <MovieCard
                                 key={m.id}

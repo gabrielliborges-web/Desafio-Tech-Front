@@ -7,7 +7,7 @@ import FormsFields, { type Field, buildInitialValues } from "../common/FormsFiel
 import Drawer from "../common/Drawer";
 
 export default function MovieActions() {
-    const fields: Field[] = [
+    const fieldsSearch: Field[] = [
         { internalName: "search", label: "Busca Geral", type: "Text", value: "", colSpan: 12 },
         { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 12 },
 
@@ -29,9 +29,41 @@ export default function MovieActions() {
         { internalName: "createdAtEnd", label: "Criado em (Até)", type: "DateTime", value: "", colSpan: 6 },
     ];
 
-    const [filters, setFilters] = useState(buildInitialValues(fields));
+    const fieldsCreateMovie: Field[] = [
+        { internalName: "title", label: "Título", type: "Text", value: "", required: true, colSpan: 12 },
+        { internalName: "originalTitle", label: "Título Original", type: "Text", value: "", colSpan: 12 },
+        { internalName: "description", label: "Descrição", type: "Text", value: "", colSpan: 12 },
+
+        { internalName: "releaseDate", label: "Data de Lançamento", type: "DateTime", value: "", colSpan: 6 },
+        { internalName: "duration", label: "Duração (minutos)", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "imageUrl", label: "URL da Capa", type: "Text", value: "", colSpan: 12 },
+        { internalName: "linkPreview", label: "Link do Trailer/Teaser", type: "Text", value: "", colSpan: 12 },
+
+        { internalName: "actors", label: "Atores", type: "UserMulti", value: [], colSpan: 12 },
+        { internalName: "director", label: "Diretor", type: "User", value: '', colSpan: 12 },
+        { internalName: "producers", label: "Produtores", type: "UserMulti", value: [], colSpan: 12 },
+
+
+        { internalName: "language", label: "Idioma", type: "Text", value: "", colSpan: 6 },
+        { internalName: "country", label: "País", type: "Text", value: "", colSpan: 6 },
+
+        { internalName: "budget", label: "Orçamento (USD)", type: "Number", value: "", colSpan: 4 },
+        { internalName: "revenue", label: "Receita (USD)", type: "Number", value: "", colSpan: 4 },
+        { internalName: "profit", label: "Lucro (USD)", type: "Number", value: "", colSpan: 4 },
+
+        { internalName: "ratingAvg", label: "Avaliação Média (%)", type: "Number", value: "", colSpan: 6 },
+
+        { internalName: "status", label: "Status", type: "Choice", required: true, options: ["DRAFT", "PUBLISHED"], value: "", colSpan: 6 },
+        { internalName: "visibility", label: "Visibilidade", type: "Choice", required: true, options: ["PRIVATE", "PUBLIC"], value: "", colSpan: 6 },
+    ];
+
+    const [filters, setFilters] = useState(buildInitialValues(fieldsSearch));
     const [openModal, setOpenModal] = useState(false);
+
+    const [movieData, setMovieData] = useState(buildInitialValues(fieldsCreateMovie));
     const [openDrawer, setOpenDrawer] = useState(false);
+    console.log(movieData)
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
@@ -80,11 +112,11 @@ export default function MovieActions() {
                     </>
                 }
             >
-                <FormsFields fields={fields} values={filters} setValues={setFilters} />
+                <FormsFields fields={fieldsSearch} values={filters} setValues={setFilters} />
             </Modal>
 
             <Drawer
-                title="Detalhes do Filme"
+                title="Novo Filme"
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
                 footer={
@@ -94,8 +126,13 @@ export default function MovieActions() {
                     </>
                 }
             >
-                <p>Conteúdo do drawer aqui...</p>
+                <FormsFields
+                    fields={fieldsCreateMovie}
+                    values={movieData}
+                    setValues={setMovieData}
+                />
             </Drawer>
+
 
         </section>
     );

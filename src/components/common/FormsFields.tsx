@@ -9,8 +9,10 @@ export interface Field {
     | "Text"
     | "Number"
     | "Choice"
-    | "DateTime" | "date";
-    value?: string | number | Date;
+    | "DateTime" | "date"
+    | "User"
+    | "UserMulti";
+    value?: string | number | Date | string[];
     options?: string[];
     required?: boolean;
     colSpan?: 3 | 4 | 6 | 12;
@@ -93,11 +95,129 @@ export default function FormsFields<T extends Record<string, any>>({
                                 />
                             </div>
                         );
+                    case "User":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <UserField
+                                    label={field.label}
+                                    value={values[field.internalName] ?? { name: "", image: "" }}
+                                    onChange={(val) =>
+                                        setValues((prev) => ({ ...prev, [field.internalName]: val }))
+                                    }
+                                />
+                            </div>
+                        );
+
+                    case "UserMulti":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <UserMultiField
+                                    label={field.label}
+                                    value={Array.isArray(values[field.internalName]) ? values[field.internalName] : []}
+                                    onChange={(val) =>
+                                        setValues((prev) => ({ ...prev, [field.internalName]: val }))
+                                    }
+                                />
+                            </div>
+                        );
+
 
                     default:
                         return null;
                 }
             })}
+        </div>
+    );
+}
+
+function UserField({
+    value = { name: "", image: "" },
+    onChange,
+    label,
+}: {
+    label?: string;
+    value?: { name: string; image: string };
+    onChange: (val: { name: string; image: string }) => void;
+}) {
+    return (
+        <div className="flex flex-col gap-2 p-3 border border-border-subtle/20 rounded-md bg-background-dark/10">
+            {label && <label className="font-medium text-sm text-text-secondary-dark">{label}</label>}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Input
+                    name="name"
+                    label="Nome"
+                    value={value.name}
+                    onChange={(e) => onChange({ ...value, name: e.target.value })}
+                />
+                <Input
+                    name="image"
+                    label="Imagem (URL)"
+                    value={value.image}
+                    onChange={(e) => onChange({ ...value, image: e.target.value })}
+                />
+            </div>
+        </div>
+    );
+}
+
+
+function UserMultiField({
+    label,
+    value = [],
+    onChange,
+}: {
+    label?: string;
+    value?: { name: string; image?: string }[];
+    onChange: (val: { name: string; image?: string }[]) => void;
+}) {
+    const addUser = () => onChange([...value, { name: "", image: "" }]);
+    const removeUser = (index: number) =>
+        onChange(value.filter((_, i) => i !== index));
+
+    return (
+        <div className="flex flex-col gap-2 p-3 border border-border-subtle/20 rounded-md bg-background-dark/10">
+            {label && <label className="font-medium text-sm text-text-secondary-dark">{label}</label>}
+
+            {value?.map((user, i) => (
+                <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-3 relative">
+                    <Input
+                        name={`name-${i}`}
+                        label="Nome"
+                        value={user.name}
+                        onChange={(e) => {
+                            const updated = [...value];
+                            updated[i].name = e.target.value;
+                            onChange(updated);
+                        }}
+                    />
+                    <Input
+                        name={`image-${i}`}
+                        label="Imagem (URL)"
+                        value={user.image}
+                        onChange={(e) => {
+                            const updated = [...value];
+                            updated[i].image = e.target.value;
+                            onChange(updated);
+                        }}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => removeUser(i)}
+                        className="absolute -top-3 -right-2 text-red-400 hover:text-red-600"
+                    >
+                        ×
+                    </button>
+                </div>
+            ))}
+
+            <button
+                type="button"
+                onClick={addUser}
+                className="mt-2 text-sm text-blue-400 hover:text-blue-300"
+            >
+                + Adicionar
+            </button>
         </div>
     );
 }
