@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "../components/layout/AppLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -6,6 +6,7 @@ import Signup from "../pages/Signup";
 import MovieDetail from "../pages/MovieDetails";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../context/AuthContext";
+import NotFound from "../pages/NotFound";
 
 export default function AppRoutes() {
     const { isAuthenticated } = useAuth();
@@ -28,8 +29,10 @@ export default function AppRoutes() {
                     </AppLayout>
                 }
             />
+
+            <Route path="/" element={<Navigate to="/movies" replace />} />
             <Route
-                path="/"
+                path="/movies"
                 element={
                     <ProtectedRoute isAuthenticated={isAuthenticated}>
                         <AppLayout>
@@ -46,6 +49,15 @@ export default function AppRoutes() {
                             <MovieDetail />
                         </AppLayout>
                     </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="*"
+                element={
+                    <AppLayout>
+                        <NotFound />
+                    </AppLayout>
                 }
             />
         </Routes>

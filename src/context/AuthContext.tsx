@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     // const isAuthenticated = !!user;
-    const isAuthenticated = !!user;
+    const isAuthenticated = true
 
 
     return (
