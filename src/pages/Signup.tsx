@@ -5,8 +5,12 @@ import FormsFields, {
 } from "../components/common/FormsFields";
 import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Signup() {
+    const { signup } = useAuth();
+    const [loading, setLoading] = useState(false);
 
     const fieldsSignup: Field[] = [
         {
@@ -45,10 +49,29 @@ export default function Signup() {
 
     const [signupData, setSignupData] = useState(buildInitialValues(fieldsSignup));
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Cadastro:", signupData);
+
+        if (!signupData.name || !signupData.email || !signupData.password) {
+            toast.error("Preencha todos os campos obrigatórios");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await signup({
+                name: signupData.name.trim(),
+                email: signupData.email.trim(),
+                password: signupData.password,
+                theme: signupData.theme || "LIGHT",
+            });
+        } catch (err: any) {
+            console.error("Erro no signup:", err);
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <div className="flex items-center justify-center">
@@ -73,6 +96,7 @@ export default function Signup() {
                     <Button
                         variant="primary"
                         className="w-[120px] h-[40px]"
+                        isLoading={loading}
                     >
                         Cadastrar
                     </Button>

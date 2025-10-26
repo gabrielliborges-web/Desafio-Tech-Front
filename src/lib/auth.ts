@@ -8,11 +8,19 @@ export const signupRequest = async (
     const response = await api.post("/auth/signup", data);
     return response.data;
   } catch (error: any) {
-    const message =
-      error.response?.data?.errors?.join(", ") ||
-      error.response?.data?.error ||
-      "Erro ao cadastrar usuário.";
-    throw new Error(message);
+    console.error("Erro na requisição de signup:", error.response?.data);
+
+    const apiError = error.response?.data;
+
+    if (apiError?.errors) {
+      throw new Error(apiError.errors.join(", "));
+    }
+
+    if (apiError?.error) {
+      throw new Error(apiError.error);
+    }
+
+    throw new Error("Erro ao cadastrar usuário.");
   }
 };
 

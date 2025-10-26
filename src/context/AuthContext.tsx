@@ -51,17 +51,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-
     const signup = async (data: SignupRequest) => {
         try {
             const res = await signupRequest(data);
             setUser(res.user);
             localStorage.setItem("user", JSON.stringify(res.user));
             localStorage.setItem("token", res.token);
-            navigate("/home");
+            toast.success("Conta criada com sucesso!");
+            navigate("/movies");
         } catch (err: any) {
-            const message = err.response?.data?.errors?.join(", ") || err.response?.data?.error || "Erro no cadastro";
-            alert(message);
+            console.error("Erro no cadastro:", err);
+            toast.error(err.message || "Erro ao cadastrar usuário");
         }
     };
 
