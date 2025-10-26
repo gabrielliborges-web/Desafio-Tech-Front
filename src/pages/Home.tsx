@@ -5,6 +5,7 @@ import MovieCard from "../components/movies/MovieCard";
 
 import capitaoMarvel from '../assets/capitaoMarvel.png'
 import movies_models from '../assets/bumblebee.png'
+import BackgroundMovies from "../assets/Background_movies_opacity.png";
 
 export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,34 +30,37 @@ export default function Home() {
     const currentMovies = movies.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <main className="flex flex-col gap-8 px-8 max-w-8xl mx-auto w-full pb-10">
-            <MovieActions />
+        <main className="relative w-full min-h-screen pb-10">
+            <div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-[564px] bg-cover bg-center"
+                style={{ backgroundImage: `url(${BackgroundMovies})` }}
+            />
 
-            <section
-                className="
-      grid 
-      grid-cols-2 
-      xs:grid-cols-2 
-      sm:grid-cols-2 
-      md:grid-cols-3 
-      lg:grid-cols-4 
-      xl:grid-cols-5 
-      gap-6 
-      mt-4 
-      place-items-center
-    "
-            >
-                {currentMovies.map((m) => (
-                    <MovieCard key={m.id} {...m} />
-                ))}
-            </section>
+            <div className="relative z-10 max-w-8xl mx-auto w-full px-4 sm:px-6 md:px-8 flex flex-col gap-8 py-6">
+                <MovieActions />
 
-            <div className="flex justify-center mt-6">
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
+                <div className="bg-[#ebeaf8]/[0.08] backdrop-blur-sm rounded-md p-6 sm:p-8">
+                    <section className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+                        {currentMovies.map((m) => (
+                            <MovieCard
+                                key={m.id}
+                                title={m.title}
+                                description={m.description}
+                                imageUrl={m.imageUrl}
+                                rating={m.rating}
+                            />
+                        ))}
+                    </section>
+                </div>
+
+                <div className="flex justify-center">
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                    />
+                </div>
             </div>
         </main>
     );
