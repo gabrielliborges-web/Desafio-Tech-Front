@@ -5,12 +5,11 @@ import MovieCard from "../components/movies/MovieCard";
 
 import capitaoMarvel from '../assets/capitaoMarvel.png'
 import movies_models from '../assets/bumblebee.png'
-import BackgroundMovies from "../assets/Background_movies_opacity.png";
 
 export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
 
-    const movies = Array.from({ length: 8888 }, (_, i) => ({
+    const movies = Array.from({ length: 95 }, (_, i) => ({
         id: i + 1,
         imageUrl:
             i % 3 === 0
@@ -31,11 +30,6 @@ export default function Home() {
 
     return (
         <main className="relative w-full min-h-screen pb-10">
-            <div
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-[564px] bg-cover bg-center"
-                style={{ backgroundImage: `url(${BackgroundMovies})` }}
-            />
 
             <div className="relative z-10 max-w-8xl mx-auto w-full px-4 sm:px-6 md:px-8 flex flex-col gap-8 py-6">
                 <MovieActions />
