@@ -4,6 +4,7 @@ import Button from "../common/Button";
 import { Search } from "lucide-react";
 import Modal from "../common/Modal";
 import FormsFields, { type Field, buildInitialValues } from "../common/FormsFields";
+import Drawer from "../common/Drawer";
 
 export default function MovieActions() {
     const fields: Field[] = [
@@ -29,7 +30,8 @@ export default function MovieActions() {
     ];
 
     const [filters, setFilters] = useState(buildInitialValues(fields));
-    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
@@ -52,13 +54,14 @@ export default function MovieActions() {
                 <Button
                     variant="secondary"
                     className="w-[40%] md:w-auto h-[48px] flex items-center justify-center"
-                    onClick={() => setOpen(true)}
+                    onClick={() => setOpenModal(true)}
                 >
                     Filtros
                 </Button>
                 <Button
                     variant="primary"
                     className="w-[60%] md:w-auto h-[48px] flex items-center justify-center"
+                    onClick={() => setOpenDrawer(true)}
                 >
                     Adicionar Filme
                 </Button>
@@ -66,11 +69,11 @@ export default function MovieActions() {
 
             <Modal
                 title="Filtros Avançados"
-                open={open}
-                onClose={() => setOpen(false)}
+                open={openModal}
+                onClose={() => setOpenModal(false)}
                 footer={
                     <>
-                        <Button variant="secondary" onClick={() => setOpen(false)}>
+                        <Button variant="secondary" onClick={() => setOpenModal(false)}>
                             Cancelar
                         </Button>
                         <Button variant="primary">Aplicar Filtros</Button>
@@ -79,6 +82,21 @@ export default function MovieActions() {
             >
                 <FormsFields fields={fields} values={filters} setValues={setFilters} />
             </Modal>
+
+            <Drawer
+                title="Detalhes do Filme"
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={() => setOpenDrawer(false)}>Cancelar</Button>
+                        <Button variant="primary">Salvar</Button>
+                    </>
+                }
+            >
+                <p>Conteúdo do drawer aqui...</p>
+            </Drawer>
+
         </section>
     );
 }

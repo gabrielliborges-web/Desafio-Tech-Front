@@ -8,8 +8,7 @@ interface DrawerProps {
     onClose: () => void;
     children?: ReactNode;
     footer?: ReactNode;
-    position?: "left" | "right"; // direção opcional
-    width?: string; // permite customizar largura
+    position?: "left" | "right";
     className?: string;
 }
 
@@ -20,7 +19,6 @@ export default function Drawer({
     children,
     footer,
     position = "right",
-    width = "400px",
     className = "",
 }: DrawerProps) {
     return (
@@ -32,23 +30,23 @@ export default function Drawer({
                 "opacity-0 pointer-events-none",
                 "data-[open=true]:opacity-100 data-[open=true]:pointer-events-auto"
             )}
-            onClick={onClose}
         >
-            {/* Drawer container */}
+
             <div
                 onClick={(e) => e.stopPropagation()}
                 data-open={open}
                 className={clsx(
                     "relative h-full bg-mauve-dark-1 dark:bg-mauve-dark-2 shadow-xl flex flex-col",
                     "transition-transform duration-500 ease-in-out",
+                    "w-[90%] sm:w-[75%] md:w-[565px]",
                     position === "right"
                         ? "translate-x-full data-[open=true]:translate-x-0 ml-auto"
                         : "-translate-x-full data-[open=true]:translate-x-0 mr-auto",
                     className
                 )}
-                style={{ width }}
             >
-                {/* Header */}
+
+
                 <div className="flex items-center justify-between border-b border-border-subtle/20 px-5 py-4">
                     <h2 className="text-lg font-semibold text-text-primary-dark">{title}</h2>
                     <button
@@ -59,12 +57,12 @@ export default function Drawer({
                     </button>
                 </div>
 
-                {/* Content */}
+
                 <div className="flex-1 overflow-y-auto px-5 py-4 scrollbar-thin scrollbar-thumb-[#888]/50 scrollbar-track-transparent">
                     {children}
                 </div>
 
-                {/* Footer */}
+
                 {footer && (
                     <div className="flex justify-end gap-3 px-5 py-4 border-t border-border-subtle/20">
                         {footer}
