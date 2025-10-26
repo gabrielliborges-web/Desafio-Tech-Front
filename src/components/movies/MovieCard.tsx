@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import notFoun from '../../assets/not_found_image.svg'
 import RatingCircle from "./RatingCircle";
+import { getYouTubeId } from "../../utils/pathVideo";
 
 interface MovieCardProps {
     imageCover?: string;
@@ -26,11 +27,6 @@ export default function MovieCard({
 
     const isYouTube = linkPreview?.includes("youtube.com") || linkPreview?.includes("youtu.be");
 
-    const getYouTubeId = (url: string) => {
-        const regExp = /(?:youtube\.com\/.*v=|youtu\.be\/)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return match && match[1] ? match[1] : "";
-    };
 
     useEffect(() => {
         if (hover && linkPreview) {

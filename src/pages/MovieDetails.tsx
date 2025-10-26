@@ -3,6 +3,7 @@ import Button from "../components/common/Button";
 import Bumble from "../assets/imageCAPA.jpg";
 import bumblebee from "../assets/bumblebee.png";
 import RatingCircle from "../components/movies/RatingCircle";
+import { getYouTubeId } from "../utils/pathVideo";
 
 export default function MovieDetails() {
     const movie = {
@@ -67,6 +68,7 @@ export default function MovieDetails() {
         votes: 5704,
         rating: 95,
     };
+
 
 
     return (
@@ -225,6 +227,34 @@ export default function MovieDetails() {
                 </div>
 
             </section>
+            <section className="w-full mt-10 mb-4">
+                <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
+
+                <div className="relative w-full aspect-video rounded-sm overflow-hidden shadow-lg bg-black">
+                    {movie.linkPreview ? (
+                        movie.linkPreview.includes("youtube.com") || movie.linkPreview.includes("youtu.be") ? (
+                            <iframe
+                                src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(movie.linkPreview)}?autoplay=0&controls=1`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                        ) : (
+                            <video
+                                src={movie.linkPreview}
+                                controls
+                                playsInline
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                        )
+                    ) : (
+                        <div className="flex items-center justify-center w-full h-full bg-mauve-dark-3 text-gray-400">
+                            Nenhum trailer disponível
+                        </div>
+                    )}
+                </div>
+            </section>
+
         </main>
 
 
