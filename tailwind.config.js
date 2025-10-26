@@ -147,5 +147,14 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".bg-modal-overlay": {
+          backgroundColor: "#B5B2BC40",
+          backdropFilter: "blur(4px)",
+        },
+      });
+    },
+  ],
 };
