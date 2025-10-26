@@ -62,8 +62,8 @@ export default function Pagination({
                         key={page}
                         onClick={() => onPageChange(Number(page))}
                         className={`w-[49px] h-[44px] flex items-center justify-center rounded-[2px] font-medium transition ${currentPage === page
-                            ? "bg-[#8E4EC6] text-white"
-                            : "bg-[#1a1a1a] text-white hover:bg-[#8E4EC6]/80"
+                            ? "bg-[#1a1a1a] text-white hover:bg-[#8E4EC6]/80"
+                            : "bg-[#8E4EC6] text-white"
                             }`}
                     >
                         {page}
