@@ -1,9 +1,13 @@
+import type { ReactNode } from "react";
+import { Loader2 } from "lucide-react";
+
 interface ButtonProps {
     variant?: "primary" | "secondary" | "icon";
-    children?: React.ReactNode;
+    children?: ReactNode;
     onClick?: () => void;
     disabled?: boolean;
     className?: string;
+    isLoading?: boolean;
 }
 
 export default function Button({
@@ -12,6 +16,7 @@ export default function Button({
     onClick,
     disabled = false,
     className = "",
+    isLoading = false,
 }: ButtonProps) {
     const base =
         "font-montserrat rounded-sm transition-colors duration-200 flex items-center justify-center text-[16px] px-5 py-3 disabled:cursor-not-allowed disabled:opacity-70";
@@ -45,10 +50,14 @@ export default function Button({
     return (
         <button
             onClick={onClick}
-            disabled={disabled}
+            disabled={disabled || isLoading}
             className={`${base} ${variants[variant]} ${className}`}
         >
-            {children}
+            {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin text-white" />
+            ) : (
+                children
+            )}
         </button>
     );
 }
