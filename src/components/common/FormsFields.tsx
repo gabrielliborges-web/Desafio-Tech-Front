@@ -6,13 +6,14 @@ export interface Field {
     internalName: string;
     label?: string;
     type:
-    | "Text"
-    | "Password"
-    | "Number"
-    | "Choice"
-    | "DateTime" | "date"
-    | "User"
-    | "UserMulti";
+    | "text"
+    | "password"
+    | "number"
+    | "choice"
+    | "datetime"
+    | "date"
+    | "user"
+    | "usermulti";
     value?: string | number | Date | string[];
     options?: string[];
     required?: boolean;
@@ -60,13 +61,13 @@ export default function FormsFields<T extends Record<string, any>>({
                 const colClass = colMap[colSpan];
 
                 switch (field.type) {
-                    case "Text":
+                    case "text":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Input {...commonProps} placeholder={field.label} />
                             </div>
                         );
-                    case "Password":
+                    case "password":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Input
@@ -78,14 +79,14 @@ export default function FormsFields<T extends Record<string, any>>({
                         );
 
 
-                    case "Number":
+                    case "number":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Input {...commonProps} type="number" placeholder={field.label} />
                             </div>
                         );
 
-                    case "DateTime":
+                    case "datetime":
                     case "date":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
@@ -93,7 +94,7 @@ export default function FormsFields<T extends Record<string, any>>({
                             </div>
                         );
 
-                    case "Choice":
+                    case "choice":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Select
@@ -107,7 +108,7 @@ export default function FormsFields<T extends Record<string, any>>({
                                 />
                             </div>
                         );
-                    case "User":
+                    case "user":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <UserField
@@ -120,7 +121,7 @@ export default function FormsFields<T extends Record<string, any>>({
                             </div>
                         );
 
-                    case "UserMulti":
+                    case "usermulti":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <UserMultiField

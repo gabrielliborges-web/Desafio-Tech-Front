@@ -17,7 +17,7 @@ export default function Login() {
         {
             internalName: "email",
             label: "Nome/E-mail",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,
@@ -25,7 +25,7 @@ export default function Login() {
         {
             internalName: "password",
             label: "Senha",
-            type: "Password",
+            type: "password",
             value: "",
             required: true,
             colSpan: 12,
@@ -36,7 +36,7 @@ export default function Login() {
         {
             internalName: "email",
             label: "E-mail",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,
@@ -44,7 +44,7 @@ export default function Login() {
         {
             internalName: "code",
             label: "Código de Recuperação",
-            type: "Text",
+            type: "text",
             value: "",
             required: true,
             colSpan: 12,

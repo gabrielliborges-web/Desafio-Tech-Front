@@ -89,6 +89,7 @@ export default function Input({
                         ? { value: value ?? "", onChange }
                         : { defaultValue: value ?? "" })}
                     disabled={disabled}
+                    autoComplete={type === "password" ? "new-password" : "off"}
                     placeholder={placeholder}
                     className={`
             w-full h-[48px] rounded-sm px-4 ${isDateType ? "pr-4" : "pr-10"
