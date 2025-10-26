@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import MovieActions from "../components/movies/MovieActions";
 import Pagination from "../components/common/Pagination";
 import MovieCard from "../components/movies/MovieCard";
@@ -38,14 +40,19 @@ export default function Home() {
 
                     <section className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
                         {currentMovies.map((m) => (
-                            <MovieCard
+                            <Link
                                 key={m.id}
-                                title={m.title}
-                                description={m.description}
-                                imageCover={m.imageCover}
-                                rating={m.rating}
-                                linkPreview={m.linkPreview}
-                            />
+                                to={`/movie/${m.id}`}
+                                className="w-full h-full cursor-pointer transition-transform hover:scale-[1.02]"
+                            >
+                                <MovieCard
+                                    title={m.title}
+                                    description={m.description}
+                                    imageCover={m.imageCover}
+                                    rating={m.rating}
+                                    linkPreview={m.linkPreview}
+                                />
+                            </Link>
                         ))}
                     </section>
                 </div>
