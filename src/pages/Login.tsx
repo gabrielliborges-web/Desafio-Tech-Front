@@ -4,9 +4,14 @@ import FormsFields, {
     type Field,
 } from "../components/common/FormsFields";
 import Button from "../components/common/Button";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Login() {
+    const { login } = useAuth();
     const [isForgot, setIsForgot] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const fieldsLogin: Field[] = [
         {
@@ -20,7 +25,7 @@ export default function Login() {
         {
             internalName: "password",
             label: "Senha",
-            type: "Text",
+            type: "Password",
             value: "",
             required: true,
             colSpan: 12,
@@ -50,12 +55,28 @@ export default function Login() {
 
     const [formData, setFormData] = useState(buildInitialValues(activeFields));
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setLoading(true);
         if (isForgot) {
             console.log("Recuperar senha:", formData);
         } else {
-            console.log("Login:", formData);
+            if (!formData.email || !formData.password) {
+                toast.error("Preencha todos os campos obrigatórios");
+                return;
+            }
+            try {
+                await login({
+                    email: formData.email,
+                    password: formData.password,
+                });
+            } catch (error: any) {
+                console.error(error);
+                alert("Falha ao fazer login");
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -80,7 +101,7 @@ export default function Login() {
                         {isForgot ? "Voltar ao login" : "Esqueci minha senha"}
                     </button>
 
-                    <Button variant="primary" className="self-end w-[150] h-[40px]" >
+                    <Button variant="primary" className="self-end w-[150] h-[40px]" isLoading={loading}>
                         {isForgot ? "Enviar Código" : "Entrar"}
                     </Button>
                 </div>

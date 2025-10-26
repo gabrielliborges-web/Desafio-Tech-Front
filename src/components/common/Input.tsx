@@ -1,5 +1,6 @@
 import type { ReactNode, ChangeEvent } from "react";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 type InputType =
     | "text"
@@ -45,6 +46,8 @@ export default function Input({
     icon,
     className = "",
 }: InputProps) {
+    const [showPassword, setShowPassword] = useState(false);
+
     const showError =
         required && (value === undefined || value === null || value === "");
 
@@ -53,6 +56,8 @@ export default function Input({
 
     const showClearButton =
         !isDateType && !disabled && !!value && onClear && String(value).length > 0;
+
+    const isPassword = type === "password";
 
     return (
         <div
@@ -79,7 +84,7 @@ export default function Input({
                 <input
                     id={name}
                     name={name}
-                    type={type}
+                    type={isPassword && showPassword ? "text" : type}
                     {...(onChange
                         ? { value: value ?? "", onChange }
                         : { defaultValue: value ?? "" })}
@@ -103,22 +108,32 @@ export default function Input({
                 />
 
                 {!isDateType && (
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onClear?.();
-                            }}
-                            className={`transition-all duration-200 ease-in-out ${showClearButton
-                                ? "opacity-100 scale-100 pointer-events-auto"
-                                : "opacity-0 scale-75 pointer-events-none"
-                                } text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500`}
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                        {showClearButton && (
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onClear?.();
+                                }}
+                                className="transition-all duration-200 ease-in-out opacity-100 scale-100 text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        )}
 
-                        {!showClearButton && icon && (
+                        {isPassword && !showClearButton && (
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-dark transition-all"
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                        )}
+
+                        {!isPassword && !showClearButton && icon && (
                             <div className="text-text-secondary-light dark:text-text-secondary-dark transition-opacity duration-200 opacity-100 pointer-events-none">
                                 {icon}
                             </div>

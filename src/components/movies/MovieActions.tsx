@@ -63,7 +63,6 @@ export default function MovieActions() {
 
     const [movieData, setMovieData] = useState(buildInitialValues(fieldsCreateMovie));
     const [openDrawer, setOpenDrawer] = useState(false);
-    console.log(movieData)
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
