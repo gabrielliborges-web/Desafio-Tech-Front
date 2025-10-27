@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getAllMovies } from "../lib/movies";
 import type { MovieFilters, MoviesState } from "../types/movies";
 
@@ -17,23 +17,22 @@ export function useMovies(initialPage = 1, initialLimit = 10): UseMoviesReturn {
     filters: {},
   });
 
+  const lastFilters = useRef<MovieFilters>({});
+
   const loadMovies = async (
-    page?: number,
-    filters?: MovieFilters,
+    page = state.page,
+    filters = state.filters,
     showLoading = true
   ) => {
-    const finalPage = page ?? state.page;
-    const finalFilters = filters ?? state.filters;
-
     if (showLoading) setState((prev) => ({ ...prev, loading: true }));
 
     try {
-      console.log("→ Filtros aplicados:", finalFilters);
+      console.log("→ Filtros aplicados:", filters);
 
       const res = await getAllMovies({
-        page: finalPage,
+        page,
         limit: state.limit,
-        ...finalFilters,
+        ...filters,
       });
 
       setState((prev) => ({
@@ -42,7 +41,6 @@ export function useMovies(initialPage = 1, initialLimit = 10): UseMoviesReturn {
         loading: false,
         page: res.meta.page,
         totalPages: res.meta.totalPages,
-        filters: finalFilters,
       }));
     } catch (err: any) {
       console.error("Erro ao carregar filmes:", err.message);
@@ -54,8 +52,15 @@ export function useMovies(initialPage = 1, initialLimit = 10): UseMoviesReturn {
     loadMovies();
   }, []);
 
+  useEffect(() => {
+    if (JSON.stringify(state.filters) !== JSON.stringify(lastFilters.current)) {
+      lastFilters.current = state.filters;
+      loadMovies(1, state.filters);
+    }
+  }, [state.filters]);
+
   const setFilters = (filters: MovieFilters) => {
-    loadMovies(1, filters);
+    setState((prev) => ({ ...prev, filters }));
   };
 
   return { ...state, loadMovies, setFilters };

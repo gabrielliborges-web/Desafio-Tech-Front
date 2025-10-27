@@ -5,48 +5,53 @@ import { Search } from "lucide-react";
 import Modal from "../common/Modal";
 import FormsFields, { buildInitialValues } from "../common/FormsFields";
 import Drawer from "../common/Drawer";
-import type { MovieFilters } from "../../types/movies";
 import { fieldsCreateMovie, fieldsSearch } from "../../utils/fields";
+import { useMoviesContext } from "../../context/MoviesContext";
 
-interface MovieActionsProps {
-    setFilters: (filters: MovieFilters) => void;
-}
-
-export default function MovieActions({ setFilters }: MovieActionsProps) {
-    const [filters, setLocalFilters] = useState(buildInitialValues(fieldsSearch));
+export default function MovieActions() {
+    const { setFilters, filters } = useMoviesContext();
+    const [localFilters, setLocalFilters] = useState(filters);
     const [openModal, setOpenModal] = useState(false);
     const [movieData, setMovieData] = useState(buildInitialValues(fieldsCreateMovie));
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(filters.search ?? "");
+    const lastSearch = useRef("");
 
-    // 🔹 Guarda o último valor aplicado para evitar loops
-    const lastAppliedSearch = useRef("");
 
-    const handleApplyFilters = () => {
-        setFilters(filters);
-        setOpenModal(false);
-    };
-
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-    };
-
-    // ✅ Debounce com controle para evitar loop
     useEffect(() => {
         const timeout = setTimeout(() => {
-            // Só aplica se for diferente do último termo aplicado
             if (
                 (searchTerm.length >= 3 || searchTerm.length === 0) &&
-                searchTerm !== lastAppliedSearch.current
+                searchTerm !== lastSearch.current
             ) {
-                setFilters({ search: searchTerm });
-                lastAppliedSearch.current = searchTerm; // salva o último valor aplicado
+                setFilters({ ...filters, search: searchTerm });
+                lastSearch.current = searchTerm;
             }
         }, 700);
 
         return () => clearTimeout(timeout);
     }, [searchTerm]);
+
+    const handleApplyFilters = () => {
+        setFilters(localFilters);
+        setOpenModal(false);
+    };
+
+    const handleClearFilters = () => {
+        const emptyFilters = Object.keys(localFilters).reduce((acc, key) => {
+            acc[key as keyof typeof localFilters] = undefined;
+            return acc;
+        }, {} as typeof localFilters);
+
+        setLocalFilters(emptyFilters);
+        setFilters({});
+    };
+
+    console.log(localFilters)
+
+    const activeFilters = Object.values(localFilters).some(
+        (v) => v !== "" && v !== null && v !== undefined)
+
 
     return (
         <section className="w-full flex flex-col gap-3 md:flex-row md:items-center md:justify-end md:gap-3">
@@ -56,7 +61,8 @@ export default function MovieActions({ setFilters }: MovieActionsProps) {
                     placeholder="Pesquise por filmes"
                     label=""
                     value={searchTerm}
-                    onChange={handleSearch}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onClear={() => setSearchTerm("")}
                     icon={<Search className="w-5 h-5" />}
                     type="text"
                 />
@@ -79,6 +85,7 @@ export default function MovieActions({ setFilters }: MovieActionsProps) {
                 </Button>
             </div>
 
+
             <Modal
                 title="Filtros Avançados"
                 open={openModal}
@@ -88,15 +95,29 @@ export default function MovieActions({ setFilters }: MovieActionsProps) {
                         <Button variant="secondary" onClick={() => setOpenModal(false)}>
                             Cancelar
                         </Button>
-                        <Button variant="primary" onClick={handleApplyFilters}>
+                        <Button variant="primary" onClick={handleApplyFilters} disabled={!activeFilters}>
                             Aplicar Filtros
                         </Button>
+                        {activeFilters && (
+                            <Button
+                                variant="primary"
+                                className="text-sm text-red-400 hover:text-red-300"
+                                onClick={handleClearFilters}
+                            >
+                                Limpar
+                            </Button>
+                        )}
                     </>
                 }
             >
-                <FormsFields fields={fieldsSearch} values={filters} setValues={setLocalFilters} />
+                <FormsFields
+                    fields={fieldsSearch}
+                    values={localFilters}
+                    setValues={setLocalFilters}
+                />
             </Modal>
 
+            {/* 🔹 Drawer de criação */}
             <Drawer
                 title="Novo Filme"
                 open={openDrawer}

@@ -1,18 +1,14 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MovieActions from "../components/movies/MovieActions";
 import Pagination from "../components/common/Pagination";
 import MovieCard from "../components/movies/MovieCard";
 import Loading from "../components/common/Loading";
-import { useMovies } from "../hooks/useMovies";
+import { useMoviesContext } from "../context/MoviesContext";
 
 
 export default function Home() {
-    const { data, loading, page, totalPages, loadMovies, setFilters } = useMovies();
-
-    useEffect(() => {
-        loadMovies();
-    }, []);
+    const { data, loading, page, totalPages, loadMovies } = useMoviesContext();
+    console.log({ data, loading, page, totalPages })
 
     const handlePageChange = (page: number) => {
         loadMovies(page);
@@ -21,10 +17,9 @@ export default function Home() {
     if (loading) return <Loading text="Carregando filmes..." />;
 
     return (
-        <main className="relative w-full">
+        <main className="relative w-full min-h-screen pb-10">
             <div className="relative z-10 max-w-8xl mx-auto w-full px-4 sm:px-6 md:px-8 flex flex-col gap-8 py-6">
-                <MovieActions setFilters={setFilters} />
-
+                <MovieActions />
 
                 <div className="bg-[#ebeaf8]/[0.05] rounded-md p-6 sm:p-8 border border-[#ebeaf8]/[0.08]">
                     {data.length === 0 ? (
