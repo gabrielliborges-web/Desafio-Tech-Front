@@ -1,7 +1,6 @@
 import type { Field } from "../components/common/FormsFields";
 
 export const fieldsSearch: Field[] = [
-  // 🔹 Busca geral
   {
     internalName: "search",
     label: "Busca Geral",
@@ -10,7 +9,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 12,
   },
 
-  // 🔹 Título original
   {
     internalName: "originalTitle",
     label: "Título Original",
@@ -19,7 +17,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 12,
   },
 
-  // 🔹 Diretor
   {
     internalName: "director",
     label: "Diretor",
@@ -28,7 +25,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Idioma e país
   {
     internalName: "language",
     label: "Idioma",
@@ -44,7 +40,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 3,
   },
 
-  // 🔹 Classificação indicativa
   {
     internalName: "indicativeRating",
     label: "Classificação Indicativa (≤)",
@@ -53,7 +48,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Período de lançamento
   {
     internalName: "releaseDateStart",
     label: "Lançamento (De)",
@@ -69,7 +63,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Duração
   {
     internalName: "minDuration",
     label: "Duração Mínima (min)",
@@ -85,7 +78,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Orçamento
   {
     internalName: "minBudget",
     label: "Orçamento Mínimo ($)",
@@ -101,7 +93,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Receita / Lucro
   {
     internalName: "minRevenue",
     label: "Receita Mínima ($)",
@@ -131,7 +122,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Rating médio
   {
     internalName: "minRatingAvg",
     label: "Nota Média Mínima",
@@ -147,7 +137,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Status e visibilidade
   {
     internalName: "status",
     label: "Status",
@@ -165,7 +154,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
-  // 🔹 Usuário responsável
   {
     internalName: "userId",
     label: "Usuário Responsável",
@@ -174,7 +162,6 @@ export const fieldsSearch: Field[] = [
     colSpan: 12,
   },
 
-  // 🔹 Datas de criação
   {
     internalName: "createdAtStart",
     label: "Criado em (De)",

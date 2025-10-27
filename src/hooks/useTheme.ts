@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { updateUserTheme } from "../lib/users";
 
-export function useTheme(theme: string) {
+export function useTheme(initialTheme?: string) {
   const [isDark, setIsDark] = useState<boolean>(() => {
-    if (theme) return theme === "DARK";
+    if (initialTheme) return initialTheme === "DARK";
 
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme === "dark";
@@ -23,10 +24,20 @@ export function useTheme(theme: string) {
   }, [isDark]);
 
   useEffect(() => {
-    if (theme) setIsDark(theme === "DARK");
-  }, [theme]);
+    if (initialTheme) setIsDark(initialTheme === "DARK");
+  }, [initialTheme]);
 
-  const toggleTheme = () => setIsDark((prev) => !prev);
+  const toggleTheme = async () => {
+    const newTheme = isDark ? "LIGHT" : "DARK";
+    setIsDark((prev) => !prev);
+
+    try {
+      await updateUserTheme(newTheme);
+      console.log(`Tema alterado para ${newTheme}`);
+    } catch (error: any) {
+      console.error(`Erro ao atualizar tema: ${error.message}`);
+    }
+  };
 
   return { isDark, toggleTheme };
 }
