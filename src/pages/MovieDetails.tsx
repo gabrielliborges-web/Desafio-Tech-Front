@@ -6,8 +6,8 @@ import Modal from "../components/common/Modal";
 import Drawer from "../components/common/Drawer";
 import FormsFields from "../components/common/FormsFields";
 import { fieldsEditMovie } from "../utils/fields";
-import { getMovieById } from "../lib/movies";
-import { useParams } from "react-router-dom";
+import { deleteMovie, getMovieById } from "../lib/movies";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/common/Loading";
 import NotFoundState from "../components/common/NotFoundState";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ import MovieTrailer from "../components/movies/MovieTrailer";
 
 export default function MovieDetails() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [movie, setMovie] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -24,9 +25,16 @@ export default function MovieDetails() {
 
     const currentUser = { id: 1, name: "Gabrielli Borges" };
 
-    const handleDelete = () => {
-        console.log("Filme deletado com sucesso!");
-        setOpenDeleteModal(false);
+    const handleDelete = async () => {
+        try {
+            await deleteMovie(movie.id);
+            toast.success("Filme deletado com sucesso!");
+            setOpenDeleteModal(false);
+            navigate("/movies");
+        } catch (err: any) {
+            console.error(err);
+            toast.error(err.message || "Erro ao deletar o filme.");
+        }
     };
 
     const handleSave = () => {
