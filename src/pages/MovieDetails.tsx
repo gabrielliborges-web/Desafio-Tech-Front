@@ -1,18 +1,21 @@
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { fieldsEditMovie } from "../utils/fields";
+import { deleteMovie, getMovieById } from "../lib/movies";
+import { useAuth } from "../context/AuthContext";
+
 import InfoCard from "../components/movies/InfoCard";
 import Button from "../components/common/Button";
 import RatingCircle from "../components/movies/RatingCircle";
-import { useEffect, useState } from "react";
 import Modal from "../components/common/Modal";
 import Drawer from "../components/common/Drawer";
 import FormsFields from "../components/common/FormsFields";
-import { fieldsEditMovie } from "../utils/fields";
-import { deleteMovie, getMovieById } from "../lib/movies";
-import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/common/Loading";
 import NotFoundState from "../components/common/NotFoundState";
-import toast from "react-hot-toast";
 import MovieTrailer from "../components/movies/MovieTrailer";
-import { useAuth } from "../context/AuthContext";
+
 
 export default function MovieDetails() {
     const { id } = useParams();
@@ -26,6 +29,7 @@ export default function MovieDetails() {
     const [openEditDrawer, setOpenEditDrawer] = useState(false);
     const [movieData, setMovieData] = useState<any>({});
     const [errorType, setErrorType] = useState<"notFound" | "forbidden" | null>(null);
+    const [hasValidImage, setHasValidImage] = useState(true);
 
     const handleDelete = async () => {
         try {
@@ -124,6 +128,8 @@ export default function MovieDetails() {
             />
         );
 
+    console.log({ movie, hasValidImage })
+
 
     return (
         <main className="relative w-full text-white overflow-hidden px-10">
@@ -140,15 +146,18 @@ export default function MovieDetails() {
             </div>
 
             <section className="relative z-10 w-full max-w-[1440px] mx-auto pt-10">
-                {movie?.imageCover && (
+
+                {movie?.imageCover && hasValidImage && (
                     <div className="flex justify-center md:hidden order-1 mb-6">
                         <img
                             src={movie?.imageCover}
                             alt={movie?.title}
-                            className="w-[374px] h-[542px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
+                            onError={() => setHasValidImage(false)}
+                            className="w-[374px] h-[500px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
                         />
                     </div>
                 )}
+
 
                 <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 order-2">
                     {movie?.userId === user?.id && (
@@ -182,7 +191,7 @@ export default function MovieDetails() {
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {movie?.imageCover && (
+                    {movie?.imageCover && hasValidImage && (
                         <div className="hidden md:flex justify-center md:justify-start">
                             <img
                                 src={movie?.imageCover}
