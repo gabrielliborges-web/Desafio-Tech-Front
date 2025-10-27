@@ -117,7 +117,6 @@ export default function MovieActions() {
                 />
             </Modal>
 
-            {/* 🔹 Drawer de criação */}
             <Drawer
                 title="Novo Filme"
                 open={openDrawer}

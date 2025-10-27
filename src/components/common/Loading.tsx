@@ -4,6 +4,19 @@ export default function Loading({ text = "Preparando o espetáculo..." }: { text
     return (
         <div className="relative w-full h-screen flex flex-col items-center justify-center bg-background-dark text-white select-none overflow-hidden">
             <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "linear" }}
+                className="absolute top-12 flex gap-3 opacity-25 z-0"
+            >
+                {[...Array(25)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="w-10 h-6 bg-purple-500/70 rounded-sm shadow-[0_0_10px_#8b5cf6aa]"
+                    />
+                ))}
+            </motion.div>
+
+            <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0.2, 0.5, 0.2] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -31,10 +44,19 @@ export default function Loading({ text = "Preparando o espetáculo..." }: { text
                 {text}
             </motion.h2>
 
+
+
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="absolute inset-0 bg-gradient-to-b from-purple-800/20 via-transparent to-purple-900/30"
+            />
+
             <motion.div
                 animate={{ x: ["0%", "-50%"] }}
                 transition={{ duration: 2.8, repeat: Infinity, ease: "linear" }}
-                className="absolute bottom-12 flex gap-3 opacity-25 z-0"
+                className="absolute top-12 flex gap-3 opacity-25 z-0"
             >
                 {[...Array(25)].map((_, i) => (
                     <div
@@ -43,13 +65,6 @@ export default function Loading({ text = "Preparando o espetáculo..." }: { text
                     />
                 ))}
             </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute inset-0 bg-gradient-to-b from-purple-800/20 via-transparent to-purple-900/30"
-            />
         </div>
     );
 }
