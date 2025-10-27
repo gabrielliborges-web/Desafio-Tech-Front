@@ -87,6 +87,13 @@ export default function MovieDetails() {
     }, [id]);
 
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, []);
+
     if (loading) return <Loading text="Carregando filme..." />;
     if (!movie)
         return (

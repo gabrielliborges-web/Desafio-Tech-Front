@@ -4,6 +4,7 @@ import Pagination from "../components/common/Pagination";
 import MovieCard from "../components/movies/MovieCard";
 import Loading from "../components/common/Loading";
 import { useMoviesContext } from "../context/MoviesContext";
+import { useEffect } from "react";
 
 
 export default function Home() {
@@ -12,6 +13,13 @@ export default function Home() {
     const handlePageChange = (page: number) => {
         loadMovies(page);
     };
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [data]);
 
     if (loading) return <Loading text="Carregando filmes..." />;
 
