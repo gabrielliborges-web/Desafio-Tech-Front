@@ -160,16 +160,10 @@ export default function MovieDetails() {
                     )}
 
                     <div className="col-span-2 rounded-md p-4 flex flex-col gap-6">
-                        {(movie.tagline || movie.votes || movie.rating) && (
-                            <div className="grid grid-cols-[2fr_1fr_auto] items-center gap-4">
-                                {movie.tagline && (
-                                    <p className="italic text-gray-300 text-center md:text-left text-base md:text-lg">
-                                        {movie.tagline}
-                                    </p>
-                                )}
-
-                                {(movie.indicativeRating || movie.votes) && (
-                                    <div className="flex justify-center gap-2">
+                        {(movie.tagline || movie.votes || movie.ratingAvg) && (
+                            <div className="flex flex-col items-center md:grid md:grid-cols-[2fr_1fr_auto] md:items-center gap-4">
+                                <div className="flex flex-col md:flex-row md:items-center md:col-span-3 gap-4 w-full md:w-auto">
+                                    <div className="flex justify-center gap-2 w-full md:w-auto">
                                         {movie.indicativeRating && (
                                             <InfoCard
                                                 title="Classificação Indicativa"
@@ -186,22 +180,28 @@ export default function MovieDetails() {
                                                 className="min-w-[140px] text-center"
                                             />
                                         )}
+                                        {movie.ratingAvg && (
+                                            <div className="flex justify-center md:justify-end w-full md:w-auto">
+                                                <RatingCircle
+                                                    rating={Number(movie.ratingAvg)}
+                                                    size={70}
+                                                    strokeWidth={5}
+                                                    bgColor="#1e1e1e"
+                                                    className="shrink-0"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
 
-                                {movie.ratingAvg && (
-                                    <div className="flex justify-center md:justify-end">
-                                        <RatingCircle
-                                            rating={Number(movie.ratingAvg)}
-                                            size={70}
-                                            strokeWidth={5}
-                                            bgColor="#1e1e1e"
-                                            className="shrink-0"
-                                        />
-                                    </div>
+                                {movie.tagline && (
+                                    <p className="italic text-gray-300 text-center text-base md:text-left md:col-span-3">
+                                        {movie.tagline}
+                                    </p>
                                 )}
                             </div>
                         )}
+
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="flex flex-col gap-4">
