@@ -23,8 +23,10 @@ export default function MovieCard({
     const [showPreview, setShowPreview] = useState(false);
     const [hoverTimer, setHoverTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
     const [previewError, setPreviewError] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
-    const poster = imageCover || notFoun;
+    const poster = !imageCover || imageError ? notFoun : imageCover;
+
     const isYouTube = linkPreview?.includes("youtube.com") || linkPreview?.includes("youtu.be");
 
     const isValidPreview =
@@ -46,7 +48,7 @@ export default function MovieCard({
             if (hoverTimer) clearTimeout(hoverTimer);
         };
     }, [hover, isValidPreview, previewError]);
-    console.log(hover, isValidPreview, previewError)
+
     return (
         <motion.div
             onMouseEnter={() => {
@@ -102,6 +104,7 @@ export default function MovieCard({
                 <img
                     src={poster}
                     alt={title}
+                    onError={() => setImageError(true)}
                     className="w-full h-full object-cover transition-all duration-300"
                 />
             )}
