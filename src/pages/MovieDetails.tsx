@@ -1,7 +1,5 @@
 import InfoCard from "../components/movies/InfoCard";
 import Button from "../components/common/Button";
-import Bumble from "../assets/imageCAPA.jpg";
-import bumblebee from "../assets/bumblebee.png";
 import RatingCircle from "../components/movies/RatingCircle";
 import { getYouTubeId } from "../utils/pathVideo";
 import { useEffect, useState } from "react";
@@ -9,81 +7,22 @@ import Modal from "../components/common/Modal";
 import Drawer from "../components/common/Drawer";
 import FormsFields from "../components/common/FormsFields";
 import { fieldsEditMovie } from "../utils/fields";
+import { getMovieById } from "../lib/movies";
+import { useParams } from "react-router-dom";
+import Loading from "../components/common/Loading";
+import NotFoundState from "../components/common/NotFoundState";
+import toast from "react-hot-toast";
 
 export default function MovieDetails() {
+    const { id } = useParams();
 
-    const movie = {
-        id: "a8bdf3d5-25b7-4c3e-9134-2f62d8e8f9b4",
-        title: "Bumblebee",
-        tagline: "Todo herói tem um começo.",
-        originalTitle: "Bumblebee",
-        description:
-            "“Bumblebee” é um filme que se passa em 1987 e conta a história do Autobot chamado Bumblebee que encontra refúgio em um ferro-velho numa pequena cidade praiana da Califórnia. Charlie, uma adolescente prestes a completar 18 anos, encontra Bumblebee machucado e sem condições de uso. Quando ela o revive, percebe que este não é qualquer fusca amarelo.",
-        releaseDate: `${new Date("2018-12-20")}`,
-        duration: 113,
-        indicativeRating: 13,
-        imageCover: bumblebee,
-        imagePoster: Bumble,
-        linkPreview: "https://www.youtube.com/watch?v=fAIX12F6958",
-        actors: [
-            { name: "Hailee Steinfeld", role: "Charlie Watson" },
-            { name: "John Cena", role: "Agent Burns" },
-            { name: "Jorge Lendeborg Jr.", role: "Memo" },
-        ],
-        director: "Travis Knight",
-        producers: [
-            { name: "Lorenzo di Bonaventura" },
-            { name: "Tom DeSanto" },
-            { name: "Michael Bay" },
-        ],
-        language: "Inglês",
-        country: "Estados Unidos",
-        budget: 135000000.0,
-        revenue: 467990000.0,
-        profit: 332990000.0,
-        ratingAvg: 6.7,
-        status: "RELEASED",
-        visibility: "PRIVATE",
-        userId: "1",
-        user: {
-            id: "user_123456",
-            name: "Gabrielli Borges",
-        },
-        genres: [
-            { id: 1, name: "Ação" },
-            { id: 2, name: "Aventura" },
-            { id: 3, name: "Ficção Científica" },
-        ],
-        ratings: [
-            { id: 1, userId: "u1", score: 70 },
-            { id: 2, userId: "u2", score: 64 },
-            { id: 3, userId: "u3", score: 67 },
-        ],
-        comments: [
-            {
-                id: 1,
-                user: "cinelover98",
-                content:
-                    "Um ótimo reboot da franquia Transformers! Muito mais coração e história.",
-                createdAt: "2020-01-02T10:00:00Z",
-            },
-        ],
-        likes: [{ userId: "u1" }, { userId: "u2" }, { userId: "u3" }],
-        createdAt: new Date("2024-01-01"),
-        updatedAt: new Date("2024-05-01"),
-        votes: 5704,
-        rating: 95,
-    };
-
-    const currentUser = {
-        id: "1",
-        name: "Gabrielli Borges",
-    };
-
-
-    const [movieData, setMovieData] = useState(movie);
+    const [movie, setMovie] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openEditDrawer, setOpenEditDrawer] = useState(false);
+    const [movieData, setMovieData] = useState<any>({});
+
+    const currentUser = { id: 1, name: "Gabrielli Borges" };
 
     const handleDelete = () => {
         console.log("Filme deletado com sucesso!");
@@ -96,13 +35,61 @@ export default function MovieDetails() {
     };
 
     useEffect(() => {
-        setMovieData({
-            ...movie,
-            releaseDate: movie.releaseDate
-                ? new Date(movie.releaseDate).toISOString().split("T")[0]
-                : "",
-        });
-    }, []);
+        if (!id) return;
+
+        const loadMovie = async () => {
+            try {
+                setLoading(true);
+                const data = await getMovieById(id);
+
+                const mappedMovie = {
+                    ...data,
+                    releaseDate: data.releaseDate
+                        ? new Date(data.releaseDate).toISOString().split("T")[0]
+                        : "",
+                    actors:
+                        data.actors?.map((a: string) => ({ name: a })) || [],
+
+                    producers:
+                        data.producers?.map((p: string) => ({ name: p })) || [],
+
+                    genres:
+                        data.genres?.map((g: any) => ({
+                            id: g.id || g.name,
+                            name: g.name,
+                        })) || [],
+
+                    user: data.user || { id: data.userId, name: "Usuário desconhecido" },
+                    rating: Number(data.ratingAvg) || 0,
+                    imagePoster: data.imagePoster || data.imageCover,
+                };
+
+                setMovie(mappedMovie);
+                setMovieData(mappedMovie);
+            } catch (err) {
+                console.error(err);
+                toast.error("Filme não encontrado ou inacessível.");
+                setMovie(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMovie();
+    }, [id]);
+
+
+    if (loading) return <Loading text="Carregando filme..." />;
+    if (!movie)
+        return (
+            <NotFoundState
+                title="Filme não encontrado"
+                description="O filme que você está tentando acessar pode ter sido removido ou está temporariamente indisponível."
+                actionLabel="Voltar para Home"
+                redirectTo="/movies"
+            />
+        );
+
 
 
     return (
@@ -217,7 +204,7 @@ export default function MovieDetails() {
                                         title: "Gêneros",
                                         content: (
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                {movie.genres.map((g) => (
+                                                {movie.genres.map((g: any) => (
                                                     <span
                                                         key={g.name}
                                                         className="px-3 py-1 bg-primary-darkA-3 rounded-sm text-sm"

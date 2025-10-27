@@ -30,3 +30,24 @@ export const getAllMovies = async (params?: {
     throw new Error("Erro ao carregar lista de filmes.");
   }
 };
+
+export const getMovieById = async (id: string | number) => {
+  try {
+    const response = await api.get(`/movie/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error(`Erro ao buscar filme (${id}):`, error.response?.data);
+
+    const apiError = error.response?.data;
+
+    if (apiError?.errors) {
+      throw new Error(apiError.errors.join(", "));
+    }
+
+    if (apiError?.error) {
+      throw new Error(apiError.error);
+    }
+
+    throw new Error("Erro ao carregar detalhes do filme.");
+  }
+};

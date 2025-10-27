@@ -8,7 +8,6 @@ import { useMoviesContext } from "../context/MoviesContext";
 
 export default function Home() {
     const { data, loading, page, totalPages, loadMovies } = useMoviesContext();
-    console.log({ data, loading, page, totalPages })
 
     const handlePageChange = (page: number) => {
         loadMovies(page);
