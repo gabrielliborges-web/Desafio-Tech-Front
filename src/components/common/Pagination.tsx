@@ -44,7 +44,7 @@ export default function Pagination({
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="w-[49px] h-[44px] flex items-center justify-center rounded-[2px] text-gray-300 bg-[#1a1a1a] disabled:opacity-50 hover:bg-[#2a2a2a] transition"
+                className="w-[49px] h-[44px] flex items-center justify-center rounded-[2px] text-gray-300 bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#2a2a2a] transition"
             >
                 <ChevronLeft className="w-4 h-4" />
             </button>
@@ -61,9 +61,11 @@ export default function Pagination({
                     <button
                         key={page}
                         onClick={() => onPageChange(Number(page))}
-                        className={`w-[49px] h-[44px] flex items-center justify-center rounded-[2px] font-medium transition ${currentPage === page
-                            ? "bg-[#1a1a1a] text-white hover:bg-[#8E4EC6]/80"
-                            : "bg-[#8E4EC6] text-white"
+                        disabled={currentPage === page}
+                        className={`w-[49px] h-[44px] flex items-center justify-center rounded-[2px] font-medium transition
+          ${currentPage === page
+                                ? "bg-[#8E4EC6] text-white disabled:opacity-70 disabled:cursor-not-allowed"
+                                : "bg-[#1a1a1a] text-gray-300 hover:bg-[#2a2a2a]"
                             }`}
                     >
                         {page}
@@ -74,10 +76,11 @@ export default function Pagination({
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="w-[49px] h-[44px] flex items-center justify-center rounded-[2px] text-gray-300 bg-[#1a1a1a] disabled:opacity-50 hover:bg-[#2a2a2a] transition"
+                className="w-[49px] h-[44px] flex items-center justify-center rounded-[2px] text-gray-300 bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#2a2a2a] transition"
             >
                 <ChevronRight className="w-4 h-4" />
             </button>
         </div>
+
     );
 }
