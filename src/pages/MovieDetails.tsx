@@ -12,9 +12,12 @@ import Loading from "../components/common/Loading";
 import NotFoundState from "../components/common/NotFoundState";
 import toast from "react-hot-toast";
 import MovieTrailer from "../components/movies/MovieTrailer";
+import { useAuth } from "../context/AuthContext";
 
 export default function MovieDetails() {
     const { id } = useParams();
+    const { user } = useAuth();
+
     const navigate = useNavigate();
 
     const [movie, setMovie] = useState<any>(null);
@@ -22,8 +25,7 @@ export default function MovieDetails() {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openEditDrawer, setOpenEditDrawer] = useState(false);
     const [movieData, setMovieData] = useState<any>({});
-
-    const currentUser = { id: 1, name: "Gabrielli Borges" };
+    const [errorType, setErrorType] = useState<"notFound" | "forbidden" | null>(null);
 
     const handleDelete = async () => {
         try {
@@ -74,9 +76,16 @@ export default function MovieDetails() {
 
                 setMovie(mappedMovie);
                 setMovieData(mappedMovie);
-            } catch (err) {
+                setErrorType(null);
+            } catch (err: any) {
                 console.error(err);
-                toast.error("Filme não encontrado ou inacessível.");
+                if (err.status === 403) {
+                    setErrorType("forbidden");
+                } else if (err.status === 404) {
+                    setErrorType("notFound");
+                } else {
+                    toast.error(err.message || "Erro ao carregar o filme.");
+                }
                 setMovie(null);
             } finally {
                 setLoading(false);
@@ -95,7 +104,17 @@ export default function MovieDetails() {
     }, []);
 
     if (loading) return <Loading text="Carregando filme..." />;
-    if (!movie)
+    if (errorType === "forbidden")
+        return (
+            <NotFoundState
+                title="Acesso negado"
+                description="Este filme é um rascunho privado e só pode ser visualizado pelo criador."
+                actionLabel="Voltar para Home"
+                redirectTo="/movies"
+            />
+        );
+
+    if (errorType === "notFound")
         return (
             <NotFoundState
                 title="Filme não encontrado"
@@ -104,7 +123,6 @@ export default function MovieDetails() {
                 redirectTo="/movies"
             />
         );
-
 
 
     return (
@@ -133,7 +151,7 @@ export default function MovieDetails() {
                 )}
 
                 <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 order-2">
-                    {movie.userId === currentUser.id && (
+                    {movie.userId === user?.id && (
                         <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
                             <Button
                                 variant="secondary"

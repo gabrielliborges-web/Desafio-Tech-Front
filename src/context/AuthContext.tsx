@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import type { LoginRequest, SignupRequest } from "../types/auth";
 import { loginRequest, signupRequest } from "../lib/auth";
 import toast from "react-hot-toast";
+import type { User } from "../types/user";
 
 interface AuthContextProps {
-    user: any | null;
+    user: User | null;
     isAuthenticated: boolean;
     login: (data: LoginRequest) => Promise<void>;
     signup: (data: SignupRequest) => Promise<void>;

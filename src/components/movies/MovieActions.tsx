@@ -7,8 +7,11 @@ import FormsFields, { buildInitialValues } from "../common/FormsFields";
 import Drawer from "../common/Drawer";
 import { fieldsCreateMovie, fieldsSearch } from "../../utils/fields";
 import { useMoviesContext } from "../../context/MoviesContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function MovieActions() {
+    const { user } = useAuth();
+
     const { setFilters, filters } = useMoviesContext();
     const [localFilters, setLocalFilters] = useState(filters);
     const [openModal, setOpenModal] = useState(false);
@@ -47,7 +50,7 @@ export default function MovieActions() {
         setFilters({});
     };
 
-    console.log(localFilters)
+    console.log({ localFilters, user })
 
     const activeFilters = Object.values(localFilters).some(
         (v) => v !== "" && v !== null && v !== undefined)

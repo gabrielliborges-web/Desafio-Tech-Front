@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getAllMovies } from "../lib/movies";
 import type { MovieFilters, MoviesState } from "../types/movies";
+import toast from "react-hot-toast";
 
 export interface UseMoviesReturn extends MoviesState {
   loadMovies: (page?: number, filters?: MovieFilters) => Promise<void>;
@@ -27,8 +28,6 @@ export function useMovies(initialPage = 1, initialLimit = 10): UseMoviesReturn {
     if (showLoading) setState((prev) => ({ ...prev, loading: true }));
 
     try {
-      console.log("→ Filtros aplicados:", filters);
-
       const res = await getAllMovies({
         page,
         limit: state.limit,
@@ -44,6 +43,17 @@ export function useMovies(initialPage = 1, initialLimit = 10): UseMoviesReturn {
       }));
     } catch (err: any) {
       console.error("Erro ao carregar filmes:", err.message);
+
+      if (err.status === 403) {
+        toast.error(
+          "Acesso negado. Faça login novamente ou verifique suas permissões."
+        );
+      } else if (err.status === 404) {
+        toast.error("Nenhum filme encontrado.");
+      } else {
+        toast.error(err.message || "Erro ao carregar filmes.");
+      }
+
       setState((prev) => ({ ...prev, loading: false }));
     }
   };
