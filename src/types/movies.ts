@@ -29,3 +29,21 @@ export interface MovieListResponse {
     totalPages: number;
   };
 }
+
+export interface MovieFilters {
+  search?: string;
+  status?: "DRAFT" | "PUBLISHED";
+  visibility?: "PUBLIC" | "PRIVATE";
+  genre?: string;
+  orderBy?: "title" | "releaseDate" | "ratingAvg" | "createdAt";
+  order?: "asc" | "desc";
+}
+
+export interface MoviesState {
+  data: Movie[];
+  loading: boolean;
+  page: number;
+  totalPages: number;
+  limit: number;
+  filters: MovieFilters;
+}

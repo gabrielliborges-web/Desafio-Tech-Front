@@ -1,0 +1,385 @@
+import type { Field } from "../components/common/FormsFields";
+
+export const fieldsSearch: Field[] = [
+  {
+    internalName: "search",
+    label: "Busca Geral",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "originalTitle",
+    label: "Título Original",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "releaseDateStart",
+    label: "Lançamento (De)",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "releaseDateEnd",
+    label: "Lançamento (Até)",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "minDuration",
+    label: "Duração Mínima",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "maxDuration",
+    label: "Duração Máxima",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "minBudget",
+    label: "Orçamento Mínimo",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "maxBudget",
+    label: "Orçamento Máximo",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "status",
+    label: "Status",
+    type: "choice",
+    options: ["DRAFT", "PUBLISHED"],
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "visibility",
+    label: "Visibilidade",
+    type: "choice",
+    options: ["PRIVATE", "PUBLIC"],
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "userId",
+    label: "Usuário Responsável",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "createdAtStart",
+    label: "Criado em (De)",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "createdAtEnd",
+    label: "Criado em (Até)",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+];
+
+export const fieldsCreateMovie: Field[] = [
+  {
+    internalName: "title",
+    label: "Título",
+    type: "text",
+    value: "",
+    required: true,
+    colSpan: 12,
+  },
+  {
+    internalName: "originalTitle",
+    label: "Título Original",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "description",
+    label: "Descrição",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "releaseDate",
+    label: "Data de Lançamento",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "duration",
+    label: "Duração (minutos)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "imageUrl",
+    label: "URL da Capa",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "linkPreview",
+    label: "Link do Trailer/Teaser",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "actors",
+    label: "Atores",
+    type: "usermulti",
+    value: [],
+    colSpan: 12,
+  },
+  {
+    internalName: "director",
+    label: "Diretor",
+    type: "user",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "producers",
+    label: "Produtores",
+    type: "usermulti",
+    value: [],
+    colSpan: 12,
+  },
+
+  {
+    internalName: "language",
+    label: "Idioma",
+    type: "text",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "country",
+    label: "País",
+    type: "text",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "budget",
+    label: "Orçamento (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+  {
+    internalName: "revenue",
+    label: "Receita (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+  {
+    internalName: "profit",
+    label: "Lucro (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+
+  {
+    internalName: "ratingAvg",
+    label: "Avaliação Média (%)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "status",
+    label: "Status",
+    type: "choice",
+    required: true,
+    options: ["DRAFT", "PUBLISHED"],
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "visibility",
+    label: "Visibilidade",
+    type: "choice",
+    required: true,
+    options: ["PRIVATE", "PUBLIC"],
+    value: "",
+    colSpan: 6,
+  },
+];
+
+export const fieldsEditMovie: Field[] = [
+  {
+    internalName: "title",
+    label: "Título",
+    type: "text",
+    value: "",
+    required: true,
+    colSpan: 12,
+  },
+  {
+    internalName: "originalTitle",
+    label: "Título Original",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "description",
+    label: "Descrição",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "releaseDate",
+    label: "Data de Lançamento",
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "duration",
+    label: "Duração (minutos)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "imageUrl",
+    label: "URL da Capa",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "linkPreview",
+    label: "Link do Trailer/Teaser",
+    type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "actors",
+    label: "Atores",
+    type: "usermulti",
+    value: [],
+    colSpan: 12,
+  },
+  {
+    internalName: "director",
+    label: "Diretor",
+    type: "user",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "producers",
+    label: "Produtores",
+    type: "usermulti",
+    value: [],
+    colSpan: 12,
+  },
+
+  {
+    internalName: "language",
+    label: "Idioma",
+    type: "text",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "country",
+    label: "País",
+    type: "text",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "budget",
+    label: "Orçamento (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+  {
+    internalName: "revenue",
+    label: "Receita (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+  {
+    internalName: "profit",
+    label: "Lucro (USD)",
+    type: "number",
+    value: "",
+    colSpan: 4,
+  },
+
+  {
+    internalName: "ratingAvg",
+    label: "Avaliação Média (%)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
+    internalName: "status",
+    label: "Status",
+    type: "choice",
+    required: true,
+    options: ["DRAFT", "PUBLISHED"],
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "visibility",
+    label: "Visibilidade",
+    type: "choice",
+    required: true,
+    options: ["PRIVATE", "PUBLIC"],
+    value: "",
+    colSpan: 6,
+  },
+];
