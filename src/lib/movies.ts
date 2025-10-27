@@ -1,0 +1,32 @@
+import type { MovieListResponse } from "../types/movies";
+import { api } from "./api";
+
+export const getAllMovies = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: "DRAFT" | "PUBLISHED";
+  visibility?: "PUBLIC" | "PRIVATE";
+  genre?: string;
+  orderBy?: "title" | "releaseDate" | "ratingAvg" | "createdAt";
+  order?: "asc" | "desc";
+}): Promise<MovieListResponse> => {
+  try {
+    const response = await api.get("/movie/list", { params });
+    return response.data;
+  } catch (error: any) {
+    console.error("Erro ao buscar filmes:", error.response?.data);
+
+    const apiError = error.response?.data;
+
+    if (apiError?.errors) {
+      throw new Error(apiError.errors.join(", "));
+    }
+
+    if (apiError?.error) {
+      throw new Error(apiError.error);
+    }
+
+    throw new Error("Erro ao carregar lista de filmes.");
+  }
+};
