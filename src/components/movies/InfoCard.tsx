@@ -9,7 +9,7 @@ export default function InfoCard({
     title,
     content,
     compact = false,
-    className = "", 
+    className = "",
 }: InfoCardProps) {
     return (
         <div
@@ -24,9 +24,9 @@ export default function InfoCard({
             <p className="text-xs text-gray-400 uppercase tracking-wide truncate">
                 {title}
             </p>
-            <p className="font-semibold text-white text-sm break-words whitespace-pre-wrap overflow-hidden text-ellipsis">
+            < span className="font-semibold text-white text-sm break-words whitespace-pre-wrap overflow-hidden text-ellipsis">
                 {content}
-            </p>
+            </span>
         </div>
     );
 }

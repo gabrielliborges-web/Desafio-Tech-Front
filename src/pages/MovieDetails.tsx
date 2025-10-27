@@ -93,7 +93,7 @@ export default function MovieDetails() {
 
 
     return (
-        <main className="relative w-full text-white overflow-hidden">
+        <main className="relative w-full text-white overflow-hidden px-10">
             <div className="absolute top-0 left-0 w-full h-[300px] sm:h-[400px] md:h-[603px] hidden md:block">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
@@ -107,102 +107,119 @@ export default function MovieDetails() {
             </div>
 
             <section className="relative z-10 w-full max-w-[1440px] mx-auto pt-10">
-                <div className="flex justify-center md:hidden order-1 mb-6">
-                    <img
-                        src={movie.imageCover}
-                        alt={movie.title}
-                        className="w-[374px] h-[542px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
-                    />
-                </div>
+                {movie.imageCover && (
+                    <div className="flex justify-center md:hidden order-1 mb-6">
+                        <img
+                            src={movie.imageCover}
+                            alt={movie.title}
+                            className="w-[374px] h-[542px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
+                        />
+                    </div>
+                )}
 
                 <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 order-2">
-                    {movie.userId === currentUser.id && <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
-                        <Button
-                            variant="secondary"
-                            className="h-[40px] w-[30%] md:w-[90px] text-sm md:text-base"
-                            onClick={() => setOpenDeleteModal(true)}
-                        >
-                            Deletar
-                        </Button>
-                        <Button
-                            variant="primary"
-                            className="h-[40px] w-[70%] md:w-[120px] text-sm md:text-base"
-                            onClick={() => setOpenEditDrawer(true)}
-                        >
-                            Editar
-                        </Button>
-                    </div>}
+                    {movie.userId === currentUser.id && (
+                        <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
+                            <Button
+                                variant="secondary"
+                                className="h-[40px] w-[30%] md:w-[90px] text-sm md:text-base"
+                                onClick={() => setOpenDeleteModal(true)}
+                            >
+                                Deletar
+                            </Button>
+                            <Button
+                                variant="primary"
+                                className="h-[40px] w-[70%] md:w-[120px] text-sm md:text-base"
+                                onClick={() => setOpenEditDrawer(true)}
+                            >
+                                Editar
+                            </Button>
+                        </div>
+                    )}
 
                     <div className="order-2 md:order-1 text-center md:text-left w-full md:w-auto">
                         <h1 className="text-3xl md:text-4xl font-bold">{movie.title}</h1>
-                        <p className="text-sm md:text-base text-gray-300">
-                            Título original:{" "}
-                            <span className="font-normal">{movie.originalTitle}</span>
-                        </p>
+                        {movie.originalTitle && (
+                            <p className="text-sm md:text-base text-gray-300">
+                                Título original:{" "}
+                                <span className="font-normal">{movie.originalTitle}</span>
+                            </p>
+                        )}
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="hidden md:flex justify-center md:justify-start">
-                        <img
-                            src={movie.imageCover}
-                            alt={movie.title}
-                            className="w-[374px] h-[500px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
-                        />
-                    </div>
+                    {movie.imageCover && (
+                        <div className="hidden md:flex justify-center md:justify-start">
+                            <img
+                                src={movie.imageCover}
+                                alt={movie.title}
+                                className="w-[374px] h-[500px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
+                            />
+                        </div>
+                    )}
 
                     <div className="col-span-2 rounded-md p-4 flex flex-col gap-6">
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-
+                        {(movie.tagline || movie.votes || movie.rating) && (
                             <div className="grid grid-cols-[2fr_1fr_auto] items-center gap-4">
-                                <p className="italic text-gray-300 text-center md:text-left text-base md:text-lg">
-                                    {movie.tagline}
-                                </p>
+                                {movie.tagline && (
+                                    <p className="italic text-gray-300 text-center md:text-left text-base md:text-lg">
+                                        {movie.tagline}
+                                    </p>
+                                )}
 
-                                <div className="flex justify-center md:justify-center gap-2">
-                                    {[
-                                        { title: "Classificação Indicativa", content: `${movie.indicativeRating} anos` },
-                                        { title: "Votos", content: movie.votes },
-                                    ].map((item) => (
-                                        <InfoCard
-                                            key={item.title}
-                                            title={item.title}
-                                            content={item.content}
-                                            compact
-                                            className="min-w-[140px] text-center"
+                                {(movie.indicativeRating || movie.votes) && (
+                                    <div className="flex justify-center gap-2">
+                                        {movie.indicativeRating && (
+                                            <InfoCard
+                                                title="Classificação Indicativa"
+                                                content={`${movie.indicativeRating} anos`}
+                                                compact
+                                                className="min-w-[140px] text-center"
+                                            />
+                                        )}
+                                        {movie.votes && (
+                                            <InfoCard
+                                                title="Votos"
+                                                content={movie.votes}
+                                                compact
+                                                className="min-w-[140px] text-center"
+                                            />
+                                        )}
+                                    </div>
+                                )}
+
+                                {movie.ratingAvg && (
+                                    <div className="flex justify-center md:justify-end">
+                                        <RatingCircle
+                                            rating={Number(movie.ratingAvg)}
+                                            size={70}
+                                            strokeWidth={5}
+                                            bgColor="#1e1e1e"
+                                            className="shrink-0"
                                         />
-                                    ))}
-                                </div>
-
-                                <div className="flex justify-center md:justify-end">
-                                    <RatingCircle
-                                        rating={movie.rating}
-                                        size={70}
-                                        strokeWidth={5}
-                                        bgColor="#1e1e1e"
-                                        className="shrink-0"
-                                    />
-                                </div>
+                                    </div>
+                                )}
                             </div>
-
-
-
-                        </div>
+                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="flex flex-col gap-4">
-                                {[
-                                    {
-                                        title: "Sinopse",
-                                        content: (
+                                {movie.description && (
+                                    <InfoCard
+                                        title="Sinopse"
+                                        content={
                                             <p className="leading-relaxed text-justify">
                                                 {movie.description}
                                             </p>
-                                        ),
-                                    },
-                                    {
-                                        title: "Gêneros",
-                                        content: (
+                                        }
+                                    />
+                                )}
+
+                                {movie.genres?.length > 0 && (
+                                    <InfoCard
+                                        title="Gêneros"
+                                        content={
                                             <div className="flex flex-wrap gap-2 mt-2">
                                                 {movie.genres.map((g: any) => (
                                                     <span
@@ -213,49 +230,81 @@ export default function MovieDetails() {
                                                     </span>
                                                 ))}
                                             </div>
-                                        ),
-                                    },
-                                ].map((item) => (
-                                    <InfoCard key={item.title} title={item.title} content={item.content} />
-                                ))}
+                                        }
+                                    />
+                                )}
                             </div>
 
                             <div className="flex flex-col gap-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InfoCard title="Lançamento" content="20/12/2018" compact />
-                                    <InfoCard title="Duração" content="1h 53m" compact />
+                                    {movie.releaseDate && (
+                                        <InfoCard
+                                            title="Lançamento"
+                                            content={new Date(movie.releaseDate).toLocaleDateString("pt-BR")}
+                                            compact
+                                        />
+                                    )}
+                                    {movie.duration && (
+                                        <InfoCard
+                                            title="Duração"
+                                            content={`${Math.floor(movie.duration / 60)}h ${movie.duration % 60
+                                                }m`}
+                                            compact
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InfoCard title="Situação" content="Lançado" compact />
-                                    <InfoCard title="Idioma" content="Inglês" compact />
+                                    {movie.status && (
+                                        <InfoCard title="Situação" content={movie.status} compact />
+                                    )}
+                                    {movie.language && (
+                                        <InfoCard title="Idioma" content={movie.language} compact />
+                                    )}
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-4">
-                                    <InfoCard title="Orçamento" content="$135M" compact />
-                                    <InfoCard title="Receita" content="$467.99M" compact />
-                                    <InfoCard title="Lucro" content="$332.99M" compact />
-                                </div>
+                                {(movie.budget || movie.revenue || movie.profit) && (
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {movie.budget && (
+                                            <InfoCard
+                                                title="Orçamento"
+                                                content={`$${(Number(movie.budget) / 1_000_000).toFixed(0)}M`}
+                                                compact
+                                            />
+                                        )}
+                                        {movie.revenue && (
+                                            <InfoCard
+                                                title="Receita"
+                                                content={`$${(Number(movie.revenue) / 1_000_000).toFixed(2)}M`}
+                                                compact
+                                            />
+                                        )}
+                                        {movie.profit && (
+                                            <InfoCard
+                                                title="Lucro"
+                                                content={`$${(Number(movie.profit) / 1_000_000).toFixed(2)}M`}
+                                                compact
+                                            />
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
-
-
                     </div>
-
-
-
                 </div>
-
             </section>
 
-            <section className="w-full mt-10 mb-4">
-                <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
+            {movie.linkPreview && (
+                <section className="w-full mt-10 mb-4">
+                    <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
 
-                <div className="relative w-full aspect-video rounded-sm overflow-hidden shadow-lg bg-black">
-                    {movie.linkPreview ? (
-                        movie.linkPreview.includes("youtube.com") || movie.linkPreview.includes("youtu.be") ? (
+                    <div className="relative w-full aspect-video rounded-sm overflow-hidden shadow-lg bg-black">
+                        {movie.linkPreview.includes("youtube.com") ||
+                            movie.linkPreview.includes("youtu.be") ? (
                             <iframe
-                                src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(movie.linkPreview)}?autoplay=0&controls=1`}
+                                src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(
+                                    movie.linkPreview
+                                )}?autoplay=0&controls=1`}
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                                 className="absolute inset-0 w-full h-full object-cover"
@@ -267,14 +316,11 @@ export default function MovieDetails() {
                                 playsInline
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
-                        )
-                    ) : (
-                        <div className="flex items-center justify-center w-full h-full bg-mauve-dark-3 text-gray-400">
-                            Nenhum trailer disponível
-                        </div>
-                    )}
-                </div>
-            </section>
+                        )}
+                    </div>
+                </section>
+            )}
+
 
             <Modal
                 title="Confirmar exclusão"
