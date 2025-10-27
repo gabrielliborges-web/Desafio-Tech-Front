@@ -59,8 +59,18 @@ export default function MovieCard({
                 setHover(false);
                 setShowPreview(false);
             }}
-            className="relative w-full max-w-[235px] h-[355px] rounded-md overflow-hidden bg-[#111] cursor-pointer group transition-all duration-300"
-        >
+            className="
+    relative
+    w-[35vw] max-w-[183px]
+    sm:w-[40vw] sm:max-w-[235px]
+    aspect-[183/281] sm:aspect-[235/355]
+    rounded-[4px]
+    overflow-hidden
+    bg-[#111]
+    cursor-pointer
+    group
+    transition-all duration-300
+  "        >
             {showPreview && isValidPreview && !previewError ? (
                 isYouTube ? (
                     <div className="absolute inset-0 z-20 overflow-hidden">
