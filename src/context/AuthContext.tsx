@@ -11,6 +11,7 @@ interface AuthContextProps {
     login: (data: LoginRequest) => Promise<void>;
     signup: (data: SignupRequest) => Promise<void>;
     logout: () => void;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -74,10 +75,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const isAuthenticated = !!user;
-    console.log(user)
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, setUser }}>
             {!loading && children}
         </AuthContext.Provider>
     );

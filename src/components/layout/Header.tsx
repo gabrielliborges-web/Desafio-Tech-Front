@@ -7,9 +7,7 @@ import LogoLg from "../../assets/LogoLg.png";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
-    const { user } = useAuth();
-    const { isDark, toggleTheme } = useTheme(user?.theme || '');
-    console.log(user)
+    const { isDark, toggleTheme } = useTheme();
     const { isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
