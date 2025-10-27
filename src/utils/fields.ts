@@ -1,6 +1,7 @@
 import type { Field } from "../components/common/FormsFields";
 
 export const fieldsSearch: Field[] = [
+  // 🔹 Busca geral
   {
     internalName: "search",
     label: "Busca Geral",
@@ -8,6 +9,8 @@ export const fieldsSearch: Field[] = [
     value: "",
     colSpan: 12,
   },
+
+  // 🔹 Título original
   {
     internalName: "originalTitle",
     label: "Título Original",
@@ -16,6 +19,41 @@ export const fieldsSearch: Field[] = [
     colSpan: 12,
   },
 
+  // 🔹 Diretor
+  {
+    internalName: "director",
+    label: "Diretor",
+    type: "text",
+    value: "",
+    colSpan: 6,
+  },
+
+  // 🔹 Idioma e país
+  {
+    internalName: "language",
+    label: "Idioma",
+    type: "text",
+    value: "",
+    colSpan: 3,
+  },
+  {
+    internalName: "country",
+    label: "País",
+    type: "text",
+    value: "",
+    colSpan: 3,
+  },
+
+  // 🔹 Classificação indicativa
+  {
+    internalName: "indicativeRating",
+    label: "Classificação Indicativa (≤)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  // 🔹 Período de lançamento
   {
     internalName: "releaseDateStart",
     label: "Lançamento (De)",
@@ -31,36 +69,85 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
+  // 🔹 Duração
   {
     internalName: "minDuration",
-    label: "Duração Mínima",
+    label: "Duração Mínima (min)",
     type: "number",
     value: "",
     colSpan: 6,
   },
   {
     internalName: "maxDuration",
-    label: "Duração Máxima",
+    label: "Duração Máxima (min)",
     type: "number",
     value: "",
     colSpan: 6,
   },
 
+  // 🔹 Orçamento
   {
     internalName: "minBudget",
-    label: "Orçamento Mínimo",
+    label: "Orçamento Mínimo ($)",
     type: "number",
     value: "",
     colSpan: 6,
   },
   {
     internalName: "maxBudget",
-    label: "Orçamento Máximo",
+    label: "Orçamento Máximo ($)",
     type: "number",
     value: "",
     colSpan: 6,
   },
 
+  // 🔹 Receita / Lucro
+  {
+    internalName: "minRevenue",
+    label: "Receita Mínima ($)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "maxRevenue",
+    label: "Receita Máxima ($)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "minProfit",
+    label: "Lucro Mínimo ($)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "maxProfit",
+    label: "Lucro Máximo ($)",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  // 🔹 Rating médio
+  {
+    internalName: "minRatingAvg",
+    label: "Nota Média Mínima",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "maxRatingAvg",
+    label: "Nota Média Máxima",
+    type: "number",
+    value: "",
+    colSpan: 6,
+  },
+
+  // 🔹 Status e visibilidade
   {
     internalName: "status",
     label: "Status",
@@ -78,6 +165,7 @@ export const fieldsSearch: Field[] = [
     colSpan: 6,
   },
 
+  // 🔹 Usuário responsável
   {
     internalName: "userId",
     label: "Usuário Responsável",
@@ -86,6 +174,7 @@ export const fieldsSearch: Field[] = [
     colSpan: 12,
   },
 
+  // 🔹 Datas de criação
   {
     internalName: "createdAtStart",
     label: "Criado em (De)",

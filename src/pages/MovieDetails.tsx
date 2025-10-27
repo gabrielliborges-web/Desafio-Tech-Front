@@ -29,7 +29,7 @@ export default function MovieDetails() {
 
     const handleDelete = async () => {
         try {
-            await deleteMovie(movie.id);
+            await deleteMovie(movie?.id);
             toast.success("Filme deletado com sucesso!");
             setOpenDeleteModal(false);
             navigate("/movies");
@@ -131,7 +131,7 @@ export default function MovieDetails() {
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{
-                        backgroundImage: `url(${movie.imagePoster})`,
+                        backgroundImage: `url(${movie?.imagePoster})`,
                         backgroundPosition: "center top",
                     }}
                 />
@@ -140,18 +140,18 @@ export default function MovieDetails() {
             </div>
 
             <section className="relative z-10 w-full max-w-[1440px] mx-auto pt-10">
-                {movie.imageCover && (
+                {movie?.imageCover && (
                     <div className="flex justify-center md:hidden order-1 mb-6">
                         <img
-                            src={movie.imageCover}
-                            alt={movie.title}
+                            src={movie?.imageCover}
+                            alt={movie?.title}
                             className="w-[374px] h-[542px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
                         />
                     </div>
                 )}
 
                 <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 order-2">
-                    {movie.userId === user?.id && (
+                    {movie?.userId === user?.id && (
                         <div className="flex w-full md:w-auto gap-1 order-1 md:order-2">
                             <Button
                                 variant="secondary"
@@ -171,50 +171,50 @@ export default function MovieDetails() {
                     )}
 
                     <div className="order-2 md:order-1 text-center md:text-left w-full md:w-auto">
-                        <h1 className="text-3xl md:text-4xl font-bold">{movie.title}</h1>
-                        {movie.originalTitle && (
+                        <h1 className="text-3xl md:text-4xl font-bold">{movie?.title}</h1>
+                        {movie?.originalTitle && (
                             <p className="text-sm md:text-base text-gray-300">
                                 Título original:{" "}
-                                <span className="font-normal">{movie.originalTitle}</span>
+                                <span className="font-normal">{movie?.originalTitle}</span>
                             </p>
                         )}
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {movie.imageCover && (
+                    {movie?.imageCover && (
                         <div className="hidden md:flex justify-center md:justify-start">
                             <img
-                                src={movie.imageCover}
-                                alt={movie.title}
+                                src={movie?.imageCover}
+                                alt={movie?.title}
                                 className="w-[374px] h-[500px] object-cover rounded-[4px] shadow-[0_1px_5px_0_#00000033]"
                             />
                         </div>
                     )}
 
                     <div className="col-span-2 rounded-md p-4 flex flex-col gap-6">
-                        {(movie.tagline || movie.votes || movie.rating) && (
+                        {(movie?.tagline || movie?.votes || movie?.rating) && (
                             <div className="grid grid-cols-[2fr_1fr_auto] items-center gap-4">
-                                {movie.tagline && (
+                                {movie?.tagline && (
                                     <p className="italic text-gray-300 text-center md:text-left text-base md:text-lg">
-                                        {movie.tagline}
+                                        {movie?.tagline}
                                     </p>
                                 )}
 
-                                {(movie.indicativeRating || movie.votes) && (
+                                {(movie?.indicativeRating || movie?.votes) && (
                                     <div className="flex justify-center gap-2">
-                                        {movie.indicativeRating && (
+                                        {movie?.indicativeRating && (
                                             <InfoCard
                                                 title="Classificação Indicativa"
-                                                content={`${movie.indicativeRating} anos`}
+                                                content={`${movie?.indicativeRating} anos`}
                                                 compact
                                                 className="min-w-[140px] text-center"
                                             />
                                         )}
-                                        {movie.votes && (
+                                        {movie?.votes && (
                                             <InfoCard
                                                 title="Votos"
-                                                content={movie.votes}
+                                                content={movie?.votes}
                                                 compact
                                                 className="min-w-[140px] text-center"
                                             />
@@ -222,10 +222,10 @@ export default function MovieDetails() {
                                     </div>
                                 )}
 
-                                {movie.ratingAvg && (
+                                {movie?.ratingAvg && (
                                     <div className="flex justify-center md:justify-end">
                                         <RatingCircle
-                                            rating={Number(movie.ratingAvg)}
+                                            rating={Number(movie?.ratingAvg)}
                                             size={70}
                                             strokeWidth={5}
                                             bgColor="#1e1e1e"
@@ -238,23 +238,23 @@ export default function MovieDetails() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="flex flex-col gap-4">
-                                {movie.description && (
+                                {movie?.description && (
                                     <InfoCard
                                         title="Sinopse"
                                         content={
                                             <p className="leading-relaxed text-justify">
-                                                {movie.description}
+                                                {movie?.description}
                                             </p>
                                         }
                                     />
                                 )}
 
-                                {movie.genres?.length > 0 && (
+                                {movie?.genres?.length > 0 && (
                                     <InfoCard
                                         title="Gêneros"
                                         content={
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                {movie.genres.map((g: any) => (
+                                                {movie?.genres.map((g: any) => (
                                                     <span
                                                         key={g.name}
                                                         className="px-3 py-1 bg-primary-darkA-3 rounded-sm text-sm"
@@ -270,17 +270,17 @@ export default function MovieDetails() {
 
                             <div className="flex flex-col gap-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    {movie.releaseDate && (
+                                    {movie?.releaseDate && (
                                         <InfoCard
                                             title="Lançamento"
-                                            content={new Date(movie.releaseDate).toLocaleDateString("pt-BR")}
+                                            content={new Date(movie?.releaseDate).toLocaleDateString("pt-BR")}
                                             compact
                                         />
                                     )}
-                                    {movie.duration && (
+                                    {movie?.duration && (
                                         <InfoCard
                                             title="Duração"
-                                            content={`${Math.floor(movie.duration / 60)}h ${movie.duration % 60
+                                            content={`${Math.floor(movie?.duration / 60)}h ${movie?.duration % 60
                                                 }m`}
                                             compact
                                         />
@@ -288,34 +288,34 @@ export default function MovieDetails() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    {movie.status && (
-                                        <InfoCard title="Situação" content={movie.status} compact />
+                                    {movie?.status && (
+                                        <InfoCard title="Situação" content={movie?.status} compact />
                                     )}
-                                    {movie.language && (
-                                        <InfoCard title="Idioma" content={movie.language} compact />
+                                    {movie?.language && (
+                                        <InfoCard title="Idioma" content={movie?.language} compact />
                                     )}
                                 </div>
 
-                                {(movie.budget || movie.revenue || movie.profit) && (
+                                {(movie?.budget || movie?.revenue || movie?.profit) && (
                                     <div className="grid grid-cols-3 gap-4">
-                                        {movie.budget && (
+                                        {movie?.budget && (
                                             <InfoCard
                                                 title="Orçamento"
-                                                content={`$${(Number(movie.budget) / 1_000_000).toFixed(0)}M`}
+                                                content={`$${(Number(movie?.budget) / 1_000_000).toFixed(0)}M`}
                                                 compact
                                             />
                                         )}
-                                        {movie.revenue && (
+                                        {movie?.revenue && (
                                             <InfoCard
                                                 title="Receita"
-                                                content={`$${(Number(movie.revenue) / 1_000_000).toFixed(2)}M`}
+                                                content={`$${(Number(movie?.revenue) / 1_000_000).toFixed(2)}M`}
                                                 compact
                                             />
                                         )}
-                                        {movie.profit && (
+                                        {movie?.profit && (
                                             <InfoCard
                                                 title="Lucro"
-                                                content={`$${(Number(movie.profit) / 1_000_000).toFixed(2)}M`}
+                                                content={`$${(Number(movie?.profit) / 1_000_000).toFixed(2)}M`}
                                                 compact
                                             />
                                         )}
@@ -327,7 +327,7 @@ export default function MovieDetails() {
                 </div>
             </section>
 
-            {movie.linkPreview && <MovieTrailer linkPreview={movie.linkPreview} />}
+            {movie?.linkPreview && <MovieTrailer linkPreview={movie?.linkPreview} />}
 
             <Modal
                 title="Confirmar exclusão"
@@ -347,7 +347,7 @@ export default function MovieDetails() {
                 <div className="p-2">
                     <p className="text-gray-300 text-sm leading-relaxed">
                         Tem certeza que deseja deletar o filme{" "}
-                        <span className="font-semibold text-white">"{movie.title}"</span>?
+                        <span className="font-semibold text-white">"{movie?.title}"</span>?
                     </p>
                     <p className="text-gray-400 text-xs mt-2">
                         Esta ação é permanente e não poderá ser desfeita.
@@ -356,7 +356,7 @@ export default function MovieDetails() {
             </Modal>
 
             <Drawer
-                title={`Editar Filme — ${movie.title}`}
+                title={`Editar Filme — ${movie?.title}`}
                 open={openEditDrawer}
                 onClose={() => setOpenEditDrawer(false)}
                 footer={
