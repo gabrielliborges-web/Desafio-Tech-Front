@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import notFoun from '../../assets/not_found_image.svg'
+import notFoun from "../../assets/not_found_image.svg";
 import RatingCircle from "./RatingCircle";
 import { getYouTubeId } from "../../utils/pathVideo";
 
@@ -22,14 +22,19 @@ export default function MovieCard({
     const [hover, setHover] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
     const [hoverTimer, setHoverTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+    const [previewError, setPreviewError] = useState(false);
 
     const poster = imageCover || notFoun;
-
     const isYouTube = linkPreview?.includes("youtube.com") || linkPreview?.includes("youtu.be");
 
+    const isValidPreview =
+        linkPreview &&
+        (isYouTube
+            ? !!getYouTubeId(linkPreview)
+            : /\.(mp4|webm|mov|ogg)$/i.test(linkPreview));
 
     useEffect(() => {
-        if (hover && linkPreview) {
+        if (hover && isValidPreview && !previewError) {
             const timer = setTimeout(() => setShowPreview(true), 2000);
             setHoverTimer(timer);
         } else {
@@ -40,29 +45,30 @@ export default function MovieCard({
         return () => {
             if (hoverTimer) clearTimeout(hoverTimer);
         };
-    }, [hover, linkPreview]);
-
-
+    }, [hover, isValidPreview, previewError]);
+    console.log(hover, isValidPreview, previewError)
     return (
         <motion.div
-            onMouseEnter={() => setHover(true)}
+            onMouseEnter={() => {
+                setHover(true);
+                setPreviewError(false);
+            }}
             onMouseLeave={() => {
                 setHover(false);
                 setShowPreview(false);
             }}
             className="relative w-full max-w-[235px] h-[355px] rounded-md overflow-hidden bg-[#111] cursor-pointer group transition-all duration-300"
         >
-            {showPreview && linkPreview ? (
+            {showPreview && isValidPreview && !previewError ? (
                 isYouTube ? (
                     <div className="absolute inset-0 z-20 overflow-hidden">
                         <iframe
                             src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(
-                                linkPreview
-                            )}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(
-                                linkPreview
-                            )}`}
+                                linkPreview!
+                            )}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(linkPreview!)}`}
                             allow="autoplay; encrypted-media"
                             allowFullScreen
+                            onError={() => setPreviewError(true)}
                             className="absolute inset-0 w-full h-full object-cover z-20"
                             style={{
                                 transform: "translateZ(0)",
@@ -70,7 +76,6 @@ export default function MovieCard({
                                 backfaceVisibility: "hidden",
                             }}
                         />
-
                         <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-10" />
                     </div>
                 ) : (
@@ -82,6 +87,7 @@ export default function MovieCard({
                             loop
                             playsInline
                             crossOrigin="anonymous"
+                            onError={() => setPreviewError(true)}
                             className="absolute inset-0 w-full h-full object-cover z-20"
                             style={{
                                 transform: "translateZ(0)",
@@ -112,12 +118,9 @@ export default function MovieCard({
                 </motion.div>
             )}
 
-
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white transition-all duration-300">
                 <h3 className="text-lg font-semibold">{title}</h3>
-                {hover && (
-                    <p className="text-sm text-gray-300 mt-1 line-clamp-2">{description}</p>
-                )}
+                {hover && <p className="text-sm text-gray-300 mt-1 line-clamp-2">{description}</p>}
             </div>
         </motion.div>
     );
