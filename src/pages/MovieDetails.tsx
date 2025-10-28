@@ -13,6 +13,7 @@ import Loading from "../components/common/Loading";
 import NotFoundState from "../components/common/NotFoundState";
 import MovieTrailer from "../components/movies/MovieTrailer";
 import MovieDrawer from "../components/movies/MovieDrawer";
+import MovieTeam from "../components/movies/MovieTeam";
 
 export default function MovieDetails() {
     const { id } = useParams();
@@ -333,6 +334,12 @@ export default function MovieDetails() {
             </section>
 
             {movie?.linkPreview && <MovieTrailer linkPreview={movie?.linkPreview} />}
+
+            <MovieTeam
+                director={movie.director}
+                actors={movie.actors}
+                producers={movie.producers}
+            />
 
             <Modal
                 title="Confirmar exclusão"
