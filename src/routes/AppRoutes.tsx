@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../context/AuthContext";
 import NotFound from "../pages/NotFound";
 import { MoviesProvider } from "../context/MoviesContext";
+import ConfigMovies from "../pages/ConfigMovies";
 
 export default function AppRoutes() {
     const { isAuthenticated } = useAuth();
@@ -44,6 +45,21 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+
+            <Route
+                path="/config/movies"
+                element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                        <MoviesProvider>
+                            <AppLayout>
+                                <ConfigMovies />
+                            </AppLayout>
+                        </MoviesProvider>
+                    </ProtectedRoute>
+                }
+            />
+
+
             <Route
                 path="/movie/:id"
                 element={

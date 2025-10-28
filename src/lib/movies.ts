@@ -133,3 +133,59 @@ export const updateMovie = async (
     throw { status, message: "Erro ao atualizar o filme. Tente novamente." };
   }
 };
+
+export const getUserMovies = async (page = 1): Promise<MovieListResponse> => {
+  try {
+    const res = await api.get(`/movie/user?page=${page}`);
+    return res.data;
+  } catch (error: any) {
+    console.error("❌ Erro ao buscar filmes do usuário:", error.response?.data);
+
+    const apiError = error.response?.data;
+    const status = error.response?.status;
+
+    if (apiError?.errors)
+      throw {
+        status,
+        message: apiError.errors.map((e: any) => e.message).join(", "),
+      };
+    if (apiError?.error) throw { status, message: apiError.error };
+
+    throw { status, message: "Erro ao carregar seus filmes." };
+  }
+};
+
+export const updateMovieStatus = async (
+  id: number,
+  status?: "DRAFT" | "PUBLISHED",
+  visibility?: "PRIVATE" | "PUBLIC"
+): Promise<MovieListResponse> => {
+  try {
+    const payload: any = {};
+    if (status) payload.status = status;
+    if (visibility) payload.visibility = visibility;
+
+    const res = await api.patch(`/movie/${id}/status`, payload);
+    return res.data;
+  } catch (error: any) {
+    console.error(
+      "❌ Erro ao atualizar status/visibilidade:",
+      error.response?.data
+    );
+
+    const apiError = error.response?.data;
+    const statusCode = error.response?.status;
+
+    if (apiError?.errors)
+      throw {
+        status: statusCode,
+        message: apiError.errors.map((e: any) => e.message).join(", "),
+      };
+    if (apiError?.error) throw { status: statusCode, message: apiError.error };
+
+    throw {
+      status: statusCode,
+      message: "Erro ao alterar status ou visibilidade do filme.",
+    };
+  }
+};
