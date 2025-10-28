@@ -78,3 +78,30 @@ export const deleteMovie = async (id: string | number) => {
     };
   }
 };
+
+export const createMovie = async (formData: FormData) => {
+  try {
+    const res = await api.post("/movie/create", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Erro ao criar filme:", error.response?.data);
+
+    const apiError = error.response?.data;
+    const status = error.response?.status;
+
+    if (apiError?.errors) {
+      throw {
+        status,
+        message: apiError.errors.map((e: any) => e.message).join(", "),
+      };
+    }
+
+    if (apiError?.error) {
+      throw { status, message: apiError.error };
+    }
+
+    throw { status, message: "Erro ao cadastrar o filme. Tente novamente." };
+  }
+};

@@ -3,19 +3,18 @@ import Input from "../common/Input";
 import Button from "../common/Button";
 import { Search } from "lucide-react";
 import Modal from "../common/Modal";
-import FormsFields, { buildInitialValues } from "../common/FormsFields";
-import Drawer from "../common/Drawer";
-import { fieldsCreateMovie, fieldsSearch } from "../../utils/fields";
+import FormsFields from "../common/FormsFields";
+import { fieldsSearch } from "../../utils/fields";
 import { useMoviesContext } from "../../context/MoviesContext";
 import { useAuth } from "../../context/AuthContext";
+import MovieDrawer from "./MovieDrawer";
 
 export default function MovieActions() {
     const { user } = useAuth();
-
     const { setFilters, filters } = useMoviesContext();
+
     const [localFilters, setLocalFilters] = useState(filters);
     const [openModal, setOpenModal] = useState(false);
-    const [movieData, setMovieData] = useState(buildInitialValues(fieldsCreateMovie));
     const [openDrawer, setOpenDrawer] = useState(false);
     const [searchTerm, setSearchTerm] = useState(filters.search ?? "");
     const lastSearch = useRef("");
@@ -120,25 +119,7 @@ export default function MovieActions() {
                 />
             </Modal>
 
-            <Drawer
-                title="Novo Filme"
-                open={openDrawer}
-                onClose={() => setOpenDrawer(false)}
-                footer={
-                    <>
-                        <Button variant="secondary" onClick={() => setOpenDrawer(false)}>
-                            Cancelar
-                        </Button>
-                        <Button variant="primary">Salvar</Button>
-                    </>
-                }
-            >
-                <FormsFields
-                    fields={fieldsCreateMovie}
-                    values={movieData}
-                    setValues={setMovieData}
-                />
-            </Drawer>
+            <MovieDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} />
         </section>
     );
 }

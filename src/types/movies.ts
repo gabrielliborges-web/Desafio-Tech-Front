@@ -47,3 +47,25 @@ export interface MoviesState {
   limit: number;
   filters: MovieFilters;
 }
+
+export interface MovieFormData {
+  title: string;
+  originalTitle?: string;
+  description?: string;
+  releaseDate?: string;
+  duration?: number | string;
+  imageCoverFile?: File | null;
+  imagePosterFile?: File | null;
+  linkPreview?: string;
+  actors?: string[];
+  director?: string;
+  producers?: string[];
+  language?: string;
+  country?: string;
+  budget?: number | string;
+  revenue?: number | string;
+  profit?: number | string;
+  ratingAvg?: number | string;
+  status: "DRAFT" | "PUBLISHED";
+  visibility: "PRIVATE" | "PUBLIC";
+}

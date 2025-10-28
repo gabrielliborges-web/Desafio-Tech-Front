@@ -195,9 +195,33 @@ export const fieldsCreateMovie: Field[] = [
     colSpan: 12,
   },
   {
+    internalName: "tagline",
+    label: "Tagline",
+    type: "text",
+    value: "",
+    required: true,
+    colSpan: 12,
+  },
+
+  {
     internalName: "description",
     label: "Descrição",
     type: "text",
+    value: "",
+    colSpan: 12,
+  },
+
+  {
+    internalName: "imageCover",
+    label: "Imagem de Capa",
+    type: "file",
+    value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "imagePoster",
+    label: "Imagem do Pôster",
+    type: "file",
     value: "",
     colSpan: 12,
   },
@@ -217,13 +241,6 @@ export const fieldsCreateMovie: Field[] = [
     colSpan: 6,
   },
 
-  {
-    internalName: "imageUrl",
-    label: "URL da Capa",
-    type: "text",
-    value: "",
-    colSpan: 12,
-  },
   {
     internalName: "linkPreview",
     label: "Link do Trailer/Teaser",

@@ -13,7 +13,9 @@ export interface Field {
     | "datetime"
     | "date"
     | "user"
-    | "usermulti";
+    | "usermulti"
+    | "file"
+
     value?: string | number | Date | string[];
     options?: string[];
     required?: boolean;
@@ -65,6 +67,22 @@ export default function FormsFields<T extends Record<string, any>>({
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Input {...commonProps} placeholder={field.label} />
+                            </div>
+                        );
+                    case "file":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                        setValues((prev) => ({
+                                            ...prev,
+                                            [field.internalName]: e.target.files?.[0] || null,
+                                        }))
+                                    }
+                                    className="border border-gray-700 rounded p-2 w-full bg-mauve-dark-3 text-white"
+                                />
                             </div>
                         );
                     case "password":
