@@ -277,7 +277,6 @@ function UserField({
 
     try {
         if (typeof value === "object" && value !== null) {
-            // Caso mais comum → { name: '{"name":"as","image":""}' }
             if (typeof value.name === "string" && value.name.startsWith("{")) {
                 const parsed = JSON.parse(value.name);
                 parsedValue = {
@@ -291,7 +290,6 @@ function UserField({
                 };
             }
         } else if (typeof value === "string") {
-            // Caso venha direto como string
             const parsed = JSON.parse(value);
             parsedValue = { name: parsed.name ?? "", image: parsed.image ?? "" };
         }
@@ -357,7 +355,6 @@ function UserMultiField({
     required?: boolean;
     onChange: (val: { name: string }[]) => void;
 }) {
-    // 🔹 Converte o valor vindo do backend para objetos usáveis
     const normalized = value.map((v) => {
         if (!v) return { name: "", image: "" };
 
@@ -367,7 +364,6 @@ function UserMultiField({
                 return { name: parsed.name ?? "", image: parsed.image ?? "" };
             }
         } catch {
-            // caso dê erro no parse, ignora
         }
 
         return { name: v.name ?? "", image: (v as any).image ?? "" };
@@ -375,23 +371,19 @@ function UserMultiField({
 
     const showError = required && normalized.every((u) => !u.name);
 
-    // 🔹 Atualiza o usuário no índice correto e reconverte para o formato original
     const updateUser = (index: number, updatedUser: { name: string; image: string }) => {
         const updated = normalized.map((u, i) => (i === index ? updatedUser : u));
 
-        // Armazena SEM re-serializar em string
         onChange(updated);
     };
 
 
-    // 🔹 Adiciona novo item vazio
     const addUser = () =>
         onChange([
             ...value,
             { name: JSON.stringify({ name: "", image: "" }) },
         ]);
 
-    // 🔹 Remove item pelo índice
     const removeUser = (index: number) => {
         const filtered = value.filter((_, i) => i !== index);
         onChange(filtered);
