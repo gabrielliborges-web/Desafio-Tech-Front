@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import type { Movie, MovieFormData } from "../../types/movies";
 import FormsFields, { buildInitialValues } from "../common/FormsFields";
 import { createMovie, updateMovie } from "../../lib/movies";
+import { validateRequiredFields } from "../../utils/validateRequiredFields";
 
 interface MovieDrawerProps {
     mode: "create" | "edit";
@@ -56,36 +57,107 @@ export default function MovieDrawer({
         }
     }, [mode, movie, open]);
 
+    const isJsonString = (str: any) => {
+        if (typeof str !== "string") return false;
+        try {
+            const parsed = JSON.parse(str);
+            return typeof parsed === "object" && parsed !== null;
+        } catch {
+            return false;
+        }
+    };
+
+
+    const normalizeValue = (v: any) => {
+        if (v === undefined || v === null) return null;
+
+        if (v instanceof File) return v;
+
+        if (typeof v === "string" && isJsonString(v)) {
+            try {
+                const parsed = JSON.parse(v);
+                return JSON.stringify(parsed);
+            } catch {
+                return v;
+            }
+        }
+
+        if (typeof v === "object") {
+            return JSON.stringify(v);
+        }
+
+        return v;
+    };
+
+    const toFormData = (data: Record<string, any>): FormData => {
+        const formData = new FormData();
+
+        Object.entries(data).forEach(([key, value]) => {
+            if (value === undefined || value === null) return;
+
+            if (Array.isArray(value)) {
+                value.forEach((v, i) => {
+                    const normalized = normalizeValue(v);
+                    if (normalized !== null) {
+                        formData.append(`${key}[${i}]`, normalized);
+                    }
+                });
+                return;
+            }
+
+            if (typeof value === "object" && !(value instanceof File)) {
+                formData.append(key, normalizeValue(value));
+                return;
+            }
+
+            formData.append(key, String(value));
+        });
+
+        return formData;
+    };
+
+    const normalizeMovieDataBeforeSubmit = (data: Record<string, any>) => {
+        const cleanData = { ...data };
+
+        const fixArray = (arr?: any[]) =>
+            Array.isArray(arr)
+                ? arr.map((item) => {
+                    if (typeof item === "string" && isJsonString(item)) return item;
+                    if (typeof item === "object") return JSON.stringify(item);
+                    return item;
+                })
+                : [];
+
+        cleanData.actors = fixArray(cleanData.actors);
+        cleanData.producers = fixArray(cleanData.producers);
+        cleanData.genres = fixArray(cleanData.genres);
+
+        return cleanData;
+    };
+
     const handleSubmit = async () => {
+        const { isValid, missingFields } = validateRequiredFields(fieldsCreateMovie, movieData);
+        if (!isValid) {
+            toast.error(
+                `Preencha os campos obrigatórios: ${missingFields.join(", ")}`
+            );
+            return;
+        }
         try {
             setLoading(true);
 
-            const formData = new FormData();
-            Object.entries(movieData).forEach(([key, value]) => {
-                if (value !== undefined && value !== null) {
-                    if (Array.isArray(value)) {
-                        value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
-                    } else {
-                        formData.append(key, value as any);
-                    }
-                }
-            });
+            const normalized = normalizeMovieDataBeforeSubmit(movieData);
+            const formData = toFormData(normalized);
 
-            if (movieData.imageCoverFile)
-                formData.append("imageCover", movieData.imageCoverFile);
-            if (movieData.imagePosterFile)
-                formData.append("imagePoster", movieData.imagePosterFile);
+            if (movieData.imageCoverFile) formData.set("imageCover", movieData.imageCoverFile);
+            if (movieData.imagePosterFile) formData.set("imagePoster", movieData.imagePosterFile);
 
-            let updatedMovie;
+            const updatedMovie =
+                mode === "edit" && movie?.id
+                    ? await updateMovie(movie.id, formData)
+                    : await createMovie(formData);
 
-            if (mode === "edit" && movie?.id) {
-                updatedMovie = await updateMovie(movie.id, formData);
-                toast.success("Filme atualizado com sucesso!");
-            } else {
-                updatedMovie = await createMovie(formData);
-                toast.success("Filme cadastrado com sucesso!");
-            }
-
+            toast.success(mode === "edit" ? "Filme atualizado!" : "Filme cadastrado!");
             onClose();
             onSaved?.(updatedMovie);
         } catch (err: any) {
@@ -97,7 +169,6 @@ export default function MovieDrawer({
     };
 
 
-    console.log({ movieData, movie })
 
     return (
         <Drawer

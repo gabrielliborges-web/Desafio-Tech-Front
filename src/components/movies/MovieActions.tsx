@@ -11,6 +11,7 @@ import MovieDrawer from "./MovieDrawer";
 
 export default function MovieActions() {
     const { user } = useAuth();
+    const { refreshMovies } = useMoviesContext();
     const { setFilters, filters } = useMoviesContext();
 
     const [localFilters, setLocalFilters] = useState(filters);
@@ -119,7 +120,10 @@ export default function MovieActions() {
                 />
             </Modal>
 
-            <MovieDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} mode="create" />
+            <MovieDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} mode="create" onSaved={() => {
+                refreshMovies();
+                setOpenDrawer(false);
+            }} />
         </section>
     );
 }
