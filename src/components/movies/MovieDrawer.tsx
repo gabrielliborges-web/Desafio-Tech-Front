@@ -94,7 +94,10 @@ export default function MovieDrawer({
 
         Object.entries(data).forEach(([key, value]) => {
             if (value === undefined || value === null) return;
-
+            if (value instanceof File) {
+                formData.append(key, value);
+                return;
+            }
             if (Array.isArray(value)) {
                 value.forEach((v, i) => {
                     const normalized = normalizeValue(v);
@@ -122,8 +125,14 @@ export default function MovieDrawer({
         const fixArray = (arr?: any[]) =>
             Array.isArray(arr)
                 ? arr.map((item) => {
-                    if (typeof item === "string" && isJsonString(item)) return item;
-                    if (typeof item === "object") return JSON.stringify(item);
+                    if (typeof item === "object" && item.name && isJsonString(item.name)) {
+                        return JSON.parse(item.name);
+                    }
+
+                    if (typeof item === "string" && isJsonString(item)) {
+                        return JSON.parse(item);
+                    }
+
                     return item;
                 })
                 : [];
@@ -132,32 +141,63 @@ export default function MovieDrawer({
         cleanData.producers = fixArray(cleanData.producers);
         cleanData.genres = fixArray(cleanData.genres);
 
+        if (typeof cleanData.director === "string" && isJsonString(cleanData.director)) {
+            cleanData.director = JSON.parse(cleanData.director);
+        }
+
         return cleanData;
     };
+
 
     const handleSubmit = async () => {
         const { isValid, missingFields } = validateRequiredFields(fieldsCreateMovie, movieData);
         if (!isValid) {
-            toast.error(
-                `Preencha os campos obrigatórios: ${missingFields.join(", ")}`
-            );
+            toast.error(`Preencha os campos obrigatórios: ${missingFields.join(", ")}`);
             return;
         }
+
         try {
             setLoading(true);
 
             const normalized = normalizeMovieDataBeforeSubmit(movieData);
-            const formData = toFormData(normalized);
+            const payload = { ...normalized };
 
-            if (movieData.imageCoverFile) formData.set("imageCover", movieData.imageCoverFile);
-            if (movieData.imagePosterFile) formData.set("imagePoster", movieData.imagePosterFile);
+            delete payload.imageCover;
+            delete payload.imagePoster;
 
-            const updatedMovie =
-                mode === "edit" && movie?.id
-                    ? await updateMovie(movie.id, formData)
-                    : await createMovie(formData);
+            const formData = toFormData(payload);
 
-            toast.success(mode === "edit" ? "Filme atualizado!" : "Filme cadastrado!");
+            if (movieData.imageCover instanceof File) {
+                const ext = movieData.imageCover.name.split(".").pop();
+                const renamed = new File(
+                    [movieData.imageCover],
+                    `cover-${movieData.title || "sem-titulo"}.${ext}`,
+                    { type: movieData.imageCover.type }
+                );
+                formData.append("imageCover", renamed);
+            }
+
+            if (movieData.imagePoster instanceof File) {
+                const ext = movieData.imagePoster.name.split(".").pop();
+                const renamed = new File(
+                    [movieData.imagePoster],
+                    `poster-${movieData.title || "sem-titulo"}.${ext}`,
+                    { type: movieData.imagePoster.type }
+                );
+                formData.append("imagePoster", renamed);
+            }
+
+
+            let updatedMovie;
+
+            if (mode === "edit" && movie?.id) {
+                updatedMovie = await updateMovie(movie.id, formData);
+                toast.success("Filme atualizado com sucesso!");
+            } else {
+                updatedMovie = await createMovie(formData);
+                toast.success("Filme cadastrado com sucesso!");
+            }
+
             onClose();
             onSaved?.(updatedMovie);
         } catch (err: any) {
@@ -167,6 +207,8 @@ export default function MovieDrawer({
             setLoading(false);
         }
     };
+
+
 
 
 

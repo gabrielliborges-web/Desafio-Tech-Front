@@ -55,8 +55,8 @@ export interface MovieFormData {
   description?: string;
   releaseDate?: string;
   duration?: number | string;
-  imageCoverFile?: File | null;
-  imagePosterFile?: File | null;
+  imageCover?: File | null;
+  imagePoster?: File | null;
   linkPreview?: string;
   actors?: string[];
   director?: string;

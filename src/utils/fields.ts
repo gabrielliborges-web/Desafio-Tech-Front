@@ -233,6 +233,7 @@ export const fieldsCreateMovie: Field[] = [
   {
     internalName: "releaseDate",
     label: "Data de Lançamento",
+    required: true,
     type: "datetime",
     value: "",
     colSpan: 6,
