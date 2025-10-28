@@ -125,9 +125,6 @@ export default function MovieDetails() {
             />
         );
 
-    console.log({ movie, hasValidImage })
-
-
     return (
         <main className="relative w-full text-white overflow-hidden px-10">
             <div className="absolute top-0 left-0 w-full h-[300px] sm:h-[400px] md:h-[603px] hidden md:block">

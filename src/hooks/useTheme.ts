@@ -47,8 +47,6 @@ export function useTheme() {
           JSON.stringify({ ...parsed, theme: newTheme })
         );
       }
-
-      console.log(`Tema alterado para ${newTheme}`);
     } catch (error: any) {
       console.error(`Erro ao atualizar tema: ${error.message}`);
     }

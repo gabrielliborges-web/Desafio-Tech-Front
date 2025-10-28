@@ -6,11 +6,9 @@ import Modal from "../common/Modal";
 import FormsFields from "../common/FormsFields";
 import { fieldsSearch } from "../../utils/fields";
 import { useMoviesContext } from "../../context/MoviesContext";
-import { useAuth } from "../../context/AuthContext";
 import MovieDrawer from "./MovieDrawer";
 
 export default function MovieActions() {
-    const { user } = useAuth();
     const { refreshMovies } = useMoviesContext();
     const { setFilters, filters } = useMoviesContext();
 
@@ -49,8 +47,6 @@ export default function MovieActions() {
         setLocalFilters(emptyFilters);
         setFilters({});
     };
-
-    console.log({ localFilters, user })
 
     const activeFilters = Object.values(localFilters).some(
         (v) => v !== "" && v !== null && v !== undefined)
