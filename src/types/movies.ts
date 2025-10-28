@@ -49,6 +49,7 @@ export interface MoviesState {
 }
 
 export interface MovieFormData {
+  id?: number;
   title: string;
   originalTitle?: string;
   description?: string;

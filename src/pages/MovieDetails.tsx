@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { fieldsEditMovie } from "../utils/fields";
 import { deleteMovie, getMovieById } from "../lib/movies";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,12 +9,10 @@ import InfoCard from "../components/movies/InfoCard";
 import Button from "../components/common/Button";
 import RatingCircle from "../components/movies/RatingCircle";
 import Modal from "../components/common/Modal";
-import Drawer from "../components/common/Drawer";
-import FormsFields from "../components/common/FormsFields";
 import Loading from "../components/common/Loading";
 import NotFoundState from "../components/common/NotFoundState";
 import MovieTrailer from "../components/movies/MovieTrailer";
-
+import MovieDrawer from "../components/movies/MovieDrawer";
 
 export default function MovieDetails() {
     const { id } = useParams();
@@ -42,20 +39,6 @@ export default function MovieDetails() {
         } catch (err: any) {
             console.error(err);
             toast.error(err.message || "Erro ao deletar o filme.");
-        } finally {
-            setLoadingReqs(false)
-        }
-    };
-
-    const handleSave = () => {
-        try {
-            console.log("Filme atualizado:", movieData);
-            setOpenEditDrawer(false);
-            setLoadingReqs(true)
-
-        } catch (err: any) {
-            console.error(err);
-            toast.error(err.message || "Erro ao atualizar o filme.");
         } finally {
             setLoadingReqs(false)
         }
@@ -377,27 +360,26 @@ export default function MovieDetails() {
                 </div>
             </Modal>
 
-            <Drawer
-                title={`Editar Filme — ${movie?.title}`}
+            <MovieDrawer
+                mode="edit"
                 open={openEditDrawer}
+                movie={movieData}
                 onClose={() => setOpenEditDrawer(false)}
-                footer={
-                    <>
-                        <Button variant="secondary" onClick={() => setOpenEditDrawer(false)}>
-                            Cancelar
-                        </Button>
-                        <Button variant="primary" onClick={handleSave} isLoading={loadingReqs}>
-                            Salvar
-                        </Button>
-                    </>
-                }
-            >
-                <FormsFields
-                    fields={fieldsEditMovie}
-                    values={movieData}
-                    setValues={setMovieData}
-                />
-            </Drawer>
+                onSaved={async (updatedMovie) => {
+                    if (updatedMovie) {
+                        setMovie(updatedMovie);
+                        setMovieData(updatedMovie);
+                    } else {
+                        if (!id) return;
+                        const data = await getMovieById(id);
+                        setMovie(data);
+                        setMovieData(data);
+                    }
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+
+                }}
+            />
+
         </main>
     );
 }

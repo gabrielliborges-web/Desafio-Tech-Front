@@ -48,9 +48,11 @@ export default function AppRoutes() {
                 path="/movie/:id"
                 element={
                     <ProtectedRoute isAuthenticated={isAuthenticated}>
-                        <AppLayout>
-                            <MovieDetail />
-                        </AppLayout>
+                        <MoviesProvider>
+                            <AppLayout>
+                                <MovieDetail />
+                            </AppLayout>
+                        </MoviesProvider>
                     </ProtectedRoute>
                 }
             />

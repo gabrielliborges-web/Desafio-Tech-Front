@@ -119,7 +119,7 @@ export default function MovieActions() {
                 />
             </Modal>
 
-            <MovieDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} />
+            <MovieDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} mode="create" />
         </section>
     );
 }

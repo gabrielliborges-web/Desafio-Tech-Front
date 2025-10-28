@@ -105,3 +105,31 @@ export const createMovie = async (formData: FormData) => {
     throw { status, message: "Erro ao cadastrar o filme. Tente novamente." };
   }
 };
+
+export const updateMovie = async (
+  id: number | string,
+  formData: FormData
+): Promise<any> => {
+  try {
+    const response = await api.put(`/movie/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Erro ao atualizar filme:", error.response?.data);
+
+    const apiError = error.response?.data;
+    const status = error.response?.status;
+
+    if (apiError?.errors) {
+      throw { status, message: apiError.errors.join(", ") };
+    }
+
+    if (apiError?.error) {
+      throw { status, message: apiError.error };
+    }
+
+    throw { status, message: "Erro ao atualizar o filme. Tente novamente." };
+  }
+};
