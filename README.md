@@ -47,6 +47,39 @@ Essa aplicação faz parte de um desafio técnico voltado à demonstração de *
 - 🔄 **Controle de autenticação dinâmica:** o cabeçalho exibe automaticamente o botão para alternar entre **Login** e **Cadastro** quando o usuário não está logado.
 - 💅 **Layout responsivo e modular:** o cabeçalho, o rodapé e o layout principal (`AppLayout`) se ajustam a diferentes resoluções de tela com base em breakpoints do Tailwind.
 
+# 🔔 Notificações em Tempo Real
+
+O frontend agora exibe **notificações automáticas de novos filmes publicados**, sincronizadas via **Socket.IO**.
+
+### **Hook:** `useMovieNotifications`
+
+- Conecta ao backend (`http://localhost:4000`)
+- Ouve o evento `newNotification`
+- Atualiza o estado local em tempo real
+
+### **Componente:** `NotificationDropdown`
+
+- Exibe o sino 🔔 com contador
+- Ao clicar, mostra lista de notificações recentes
+- Adapta cores conforme o tema (claro/escuro)
+- Fecha automaticamente ao clicar fora
+
+## 💅 Estilos principais
+
+- **Fundo:** `bg-white` (tema claro) / `bg-[#1a1a1a]` (tema escuro)
+- **Ícones:** `lucide-react` (`Bell`, `Film`, `CheckCircle`)
+- **Cores dinâmicas:** azul → criação, verde → atualização
+- **Transição suave:** `scale`, `opacity`, `translate-y` com Tailwind
+
+---
+
+## 🧠 Fluxo de atualização
+
+1. Backend emite `newNotification` via Socket.IO
+2. Hook `useMovieNotifications` captura o evento
+3. Estado global de notificações é atualizado
+4. `NotificationDropdown` exibe instantaneamente o novo item
+
 ---
 
 ### 🔐 Tela de Login
