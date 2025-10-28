@@ -7,6 +7,8 @@ import FormsFields from "../common/FormsFields";
 import { fieldsSearch } from "../../utils/fields";
 import { useMoviesContext } from "../../context/MoviesContext";
 import MovieDrawer from "./MovieDrawer";
+import { validateRequiredFields } from "../../utils/validateRequiredFields";
+import toast from "react-hot-toast";
 
 export default function MovieActions() {
     const { refreshMovies } = useMoviesContext();
@@ -17,7 +19,6 @@ export default function MovieActions() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [searchTerm, setSearchTerm] = useState(filters.search ?? "");
     const lastSearch = useRef("");
-
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -34,6 +35,11 @@ export default function MovieActions() {
     }, [searchTerm]);
 
     const handleApplyFilters = () => {
+        const { isValid, missingFields } = validateRequiredFields(fieldsSearch, localFilters);
+        if (!isValid) {
+            toast.error(`Preencha os campos obrigatórios: ${missingFields.join(", ")}`);
+            return;
+        }
         setFilters(localFilters);
         setOpenModal(false);
     };

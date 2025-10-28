@@ -80,13 +80,33 @@ export default function FormsFields<T extends Record<string, any>>({
                     case "text":
                     case "password":
                     case "number":
-                    case "datetime":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <Input
+                                    {...commonProps}
+                                    type={field.type}
+                                    placeholder={field.label}
+                                />
+                            </div>
+                        );
+
                     case "date":
                         return (
                             <div key={field.internalName} className={`col-span-12 ${colClass}`}>
                                 <Input
                                     {...commonProps}
-                                    type={field.type === "datetime" ? "date" : field.type}
+                                    type="date"
+                                    placeholder={field.label}
+                                />
+                            </div>
+                        );
+
+                    case "datetime":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <Input
+                                    {...commonProps}
+                                    type="datetime-local"
                                     placeholder={field.label}
                                 />
                             </div>

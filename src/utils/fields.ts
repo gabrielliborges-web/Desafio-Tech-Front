@@ -18,6 +18,23 @@ export const fieldsSearch: Field[] = [
   },
 
   {
+    internalName: "releaseDateStart",
+    label: "Lançamento (De)",
+    type: "datetime",
+    required: true,
+    value: "",
+    colSpan: 6,
+  },
+  {
+    internalName: "releaseDateEnd",
+    label: "Lançamento (Até)",
+    required: true,
+    type: "datetime",
+    value: "",
+    colSpan: 6,
+  },
+
+  {
     internalName: "director",
     label: "Diretor",
     type: "text",
@@ -44,21 +61,6 @@ export const fieldsSearch: Field[] = [
     internalName: "indicativeRating",
     label: "Classificação Indicativa (≤)",
     type: "number",
-    value: "",
-    colSpan: 6,
-  },
-
-  {
-    internalName: "releaseDateStart",
-    label: "Lançamento (De)",
-    type: "datetime",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "releaseDateEnd",
-    label: "Lançamento (Até)",
-    type: "datetime",
     value: "",
     colSpan: 6,
   },
@@ -150,29 +152,6 @@ export const fieldsSearch: Field[] = [
     label: "Visibilidade",
     type: "choice",
     options: ["PRIVATE", "PUBLIC"],
-    value: "",
-    colSpan: 6,
-  },
-
-  {
-    internalName: "userId",
-    label: "Usuário Responsável",
-    type: "text",
-    value: "",
-    colSpan: 12,
-  },
-
-  {
-    internalName: "createdAtStart",
-    label: "Criado em (De)",
-    type: "datetime",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "createdAtEnd",
-    label: "Criado em (Até)",
-    type: "datetime",
     value: "",
     colSpan: 6,
   },
