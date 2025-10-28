@@ -9,7 +9,10 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
         <div className="flex flex-col min-h-screen bg-background-dark dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark transition-colors duration-300">
-            <Header />
+            <div className="relative z-50">
+
+                <Header />
+            </div>
 
             <main className="relative flex-1 w-full overflow-x-hidden">
                 <div

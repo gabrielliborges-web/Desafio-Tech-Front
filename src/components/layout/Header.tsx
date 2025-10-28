@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import LogoSm from "../../assets/LogoSm.png";
 import LogoLg from "../../assets/LogoLg.png";
 import { useAuth } from "../../context/AuthContext";
+import NotificationDropdown from "../common/NotificationDropdown";
 
 export default function Header() {
     const { isDark, toggleTheme } = useTheme();
@@ -39,6 +40,8 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-3">
+                <NotificationDropdown />
+
                 <Button
                     variant="icon"
                     onClick={toggleTheme}

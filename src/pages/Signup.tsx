@@ -32,7 +32,15 @@ export default function Signup() {
         {
             internalName: "password",
             label: "Senha",
-            type: "text",
+            type: "password",
+            value: "",
+            required: true,
+            colSpan: 12,
+        },
+        {
+            internalName: "confirmPassword",
+            label: "Confirme sua senha",
+            type: "password",
             value: "",
             required: true,
             colSpan: 12,
@@ -52,8 +60,13 @@ export default function Signup() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!signupData.name || !signupData.email || !signupData.password) {
+        if (!signupData.name || !signupData.email || !signupData.password || !signupData.confirmPassword) {
             toast.error("Preencha todos os campos obrigatórios");
+            return;
+        }
+
+        if (signupData.password !== signupData.confirmPassword) {
+            toast.error("As senhas não coincidem");
             return;
         }
 

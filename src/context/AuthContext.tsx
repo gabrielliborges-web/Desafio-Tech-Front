@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        if (!loading && user && location.pathname === "/login") {
+        if (!loading && user && (location.pathname === "/login" || location.pathname === "/signup")) {
             navigate("/movies", { replace: true });
         }
     }, [user, loading, location.pathname, navigate]);
