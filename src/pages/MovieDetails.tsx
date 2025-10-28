@@ -104,6 +104,8 @@ export default function MovieDetails() {
         });
     }, []);
 
+    console.log(movie)
+
     if (loading) return <Loading text="Carregando filme..." />;
     if (errorType === "forbidden")
         return (
