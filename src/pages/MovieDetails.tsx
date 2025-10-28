@@ -30,9 +30,11 @@ export default function MovieDetails() {
     const [movieData, setMovieData] = useState<any>({});
     const [errorType, setErrorType] = useState<"notFound" | "forbidden" | null>(null);
     const [hasValidImage, setHasValidImage] = useState(true);
+    const [loadingReqs, setLoadingReqs] = useState(false);
 
     const handleDelete = async () => {
         try {
+            setLoadingReqs(true)
             await deleteMovie(movie?.id);
             toast.success("Filme deletado com sucesso!");
             setOpenDeleteModal(false);
@@ -40,12 +42,23 @@ export default function MovieDetails() {
         } catch (err: any) {
             console.error(err);
             toast.error(err.message || "Erro ao deletar o filme.");
+        } finally {
+            setLoadingReqs(false)
         }
     };
 
     const handleSave = () => {
-        console.log("Filme atualizado:", movieData);
-        setOpenEditDrawer(false);
+        try {
+            console.log("Filme atualizado:", movieData);
+            setOpenEditDrawer(false);
+            setLoadingReqs(true)
+
+        } catch (err: any) {
+            console.error(err);
+            toast.error(err.message || "Erro ao atualizar o filme.");
+        } finally {
+            setLoadingReqs(false)
+        }
     };
 
     useEffect(() => {
@@ -347,7 +360,7 @@ export default function MovieDetails() {
                         <Button variant="secondary" onClick={() => setOpenDeleteModal(false)}>
                             Cancelar
                         </Button>
-                        <Button variant="primary" onClick={handleDelete}>
+                        <Button variant="primary" onClick={handleDelete} isLoading={loadingReqs}>
                             Confirmar
                         </Button>
                     </>
@@ -373,7 +386,7 @@ export default function MovieDetails() {
                         <Button variant="secondary" onClick={() => setOpenEditDrawer(false)}>
                             Cancelar
                         </Button>
-                        <Button variant="primary" onClick={handleSave}>
+                        <Button variant="primary" onClick={handleSave} isLoading={loadingReqs}>
                             Salvar
                         </Button>
                     </>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getYouTubeId } from "../../utils/pathVideo";
 
 interface MovieTrailerProps {
@@ -6,7 +7,9 @@ interface MovieTrailerProps {
 }
 
 export default function MovieTrailer({ linkPreview, title = "Trailer" }: MovieTrailerProps) {
-    if (!linkPreview) return null;
+    const [isValidVideo, setIsValidVideo] = useState(true);
+
+    if (!linkPreview || !isValidVideo) return null;
 
     const isYouTube =
         linkPreview.includes("youtube.com") || linkPreview.includes("youtu.be");
@@ -24,6 +27,7 @@ export default function MovieTrailer({ linkPreview, title = "Trailer" }: MovieTr
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className="absolute inset-0 w-full h-full object-cover"
+                        onError={() => setIsValidVideo(false)}
                     />
                 ) : (
                     <video
@@ -31,6 +35,7 @@ export default function MovieTrailer({ linkPreview, title = "Trailer" }: MovieTr
                         controls
                         playsInline
                         className="absolute inset-0 w-full h-full object-cover"
+                        onError={() => setIsValidVideo(false)}
                     />
                 )}
             </div>
