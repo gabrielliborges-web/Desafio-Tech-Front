@@ -502,8 +502,6 @@ Ela combina **camadas visuais, dados estruturados e interação condicional** ba
 
 ---
 
-AQUI DEPOIS
-
 #### 🎨 Layout e Estilo
 
 - Estrutura centralizada com `max-w-8xl`, garantindo **consistência visual** em resoluções grandes.
