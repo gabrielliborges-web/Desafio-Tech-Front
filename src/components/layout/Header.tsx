@@ -9,7 +9,7 @@ import NotificationDropdown from "../common/NotificationDropdown";
 
 export default function Header() {
     const { isDark, toggleTheme } = useTheme();
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -40,22 +40,24 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-3">
-                <NotificationDropdown />
+                {user && <>
+                    <NotificationDropdown />
 
-                <Button
-                    variant="icon"
-                    onClick={() => navigate("/config/movies")}
-                    className="relative flex items-center justify-center w-10 h-10 rounded-full bg-zinc-800 hover:bg-zinc-700 dark:bg-zinc-700 dark:hover:bg-zinc-600 transition-colors duration-300"
-                >
-                    <span
-                        className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${isDark
-                            ? "opacity-100 rotate-0 scale-100"
-                            : "opacity-0 -rotate-90 scale-0"
-                            }`}
+                    <Button
+                        variant="icon"
+                        onClick={() => navigate("/config/movies")}
+                        className="relative flex items-center justify-center w-10 h-10 rounded-full bg-zinc-800 hover:bg-zinc-700 dark:bg-zinc-700 dark:hover:bg-zinc-600 transition-colors duration-300"
                     >
-                        <Settings className="w-5 h-5 text-white" />
-                    </span>
-                </Button>
+                        <span
+                            className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${isDark
+                                ? "opacity-100 rotate-0 scale-100"
+                                : "opacity-0 -rotate-90 scale-0"
+                                }`}
+                        >
+                            <Settings className="w-5 h-5 text-white" />
+                        </span>
+                    </Button>
+                </>}
 
                 <Button
                     variant="icon"

@@ -23,6 +23,8 @@ export default function Home() {
 
     if (loading) return <Loading text="Carregando filmes..." />;
 
+    console.log(totalPages)
+
     return (
         <main className="relative w-full min-h-screen pb-10">
             <div className="relative z-10 max-w-8xl mx-auto w-full px-4 sm:px-6 md:px-8 flex flex-col gap-8 py-6">

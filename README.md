@@ -513,6 +513,26 @@ Ela combina **camadas visuais, dados estruturados e interação condicional** ba
 
 ---
 
+### ✨ Novidades Recentes
+
+#### 🔧 Header aprimorado
+
+- Adicionado botão de **Configurações (⚙️)** no topo direito.
+- Redireciona para a página **“Meus Filmes”** (`/config/movies`).
+- Mantém o estilo circular e responsivo, seguindo o padrão dos ícones 🔔 e 🌙.
+- Totalmente adaptado ao **tema claro/escuro**.
+
+#### 🎬 Página “Meus Filmes” (`/config/movies`)
+
+- Integração dos botões de controle:
+  - **Status:** alterna entre `Publicado` e `Rascunho`.
+  - **Visibilidade:** alterna entre `Público` e `Privado`.
+- Ambos os botões agora:
+  - São **proporcionais ao tamanho do card**.
+  - Ficam **centralizados e alinhados verticalmente**.
+  - Possuem **cores e bordas consistentes** com o tema atual.
+- Layout otimizado no grid responsivo de filmes.
+
 ### 🧱 Componentes Envolvidos
 
 | Componente          | Função                                                                  |

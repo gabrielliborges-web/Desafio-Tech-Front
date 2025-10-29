@@ -17,6 +17,7 @@ export interface Field {
     | "usermulti"
     | "file"
     | "textarea"
+    | "genremulti";
 
     value?: string | number | Date | string[];
     options?: string[];
@@ -173,7 +174,7 @@ export default function FormsFields<T extends Record<string, any>>({
                                         {fileName ? (
                                             <span className="text-white font-medium">{fileName}</span>
                                         ) : (
-                                            <>Clique ou arraste uma imagem aqui</>
+                                            <>Clique aqui</>
                                         )}
                                     </p>
 
@@ -205,6 +206,18 @@ export default function FormsFields<T extends Record<string, any>>({
                                         Preencha este campo
                                     </span>
                                 )}
+                            </div>
+                        );
+                    case "genremulti":
+                        return (
+                            <div key={field.internalName} className={`col-span-12 ${colClass}`}>
+                                <GenreMultiField
+                                    label={field.label}
+                                    value={Array.isArray(values[field.internalName]) ? values[field.internalName] : []}
+                                    onChange={(val) => setValues((prev) => ({ ...prev, [field.internalName]: val }))}
+                                    required={field.required}
+                                />
+                                {errorMessage}
                             </div>
                         );
 
@@ -463,5 +476,80 @@ function UserMultiField({
     );
 }
 
+
+function GenreMultiField({
+    label,
+    value = [],
+    onChange,
+    required,
+}: {
+    label?: string;
+    value?: { name: string }[];
+    required?: boolean;
+    onChange: (val: { name: string }[]) => void;
+}) {
+    const normalized = value.map((v) => ({
+        name: v?.name ?? "",
+    }));
+
+    const showError = required && normalized.every((g) => !g.name);
+
+    const updateGenre = (index: number, newName: string) => {
+        const updated = normalized.map((g, i) => (i === index ? { name: newName } : g));
+        onChange(updated);
+    };
+
+    const addGenre = () => onChange([...normalized, { name: "" }]);
+    const removeGenre = (index: number) =>
+        onChange(normalized.filter((_, i) => i !== index));
+
+    return (
+        <div className="flex flex-col gap-3 p-4 border border-border-subtle/20 rounded-md bg-mauve-dark-3">
+            {label && (
+                <label className="font-medium text-sm text-text-secondary-dark flex items-center gap-1">
+                    {label}
+                    {required && <span className="text-red-500">*</span>}
+                </label>
+            )}
+
+            {normalized.map((genre, i) => (
+                <div
+                    key={i}
+                    className="flex items-center gap-2 bg-mauve-dark-2 p-3 rounded-md relative"
+                >
+                    <Input
+                        name={`genre-${i}-name`}
+                        label={`Gênero ${i + 1}`}
+                        value={genre.name}
+                        required={required}
+                        onChange={(e) => updateGenre(i, e.target.value)}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => removeGenre(i)}
+                        className="absolute -top-2 -right-2 text-red-400 hover:text-red-600 font-bold text-lg"
+                        title="Remover"
+                    >
+                        ×
+                    </button>
+                </div>
+            ))}
+
+            <button
+                type="button"
+                onClick={addGenre}
+                className="mt-2 text-sm text-primary-dark-6 hover:text-primary-dark-8 transition"
+            >
+                + Adicionar gênero
+            </button>
+
+            {showError && (
+                <span className="text-[13px] text-red-500 mt-1">
+                    Adicione pelo menos um gênero
+                </span>
+            )}
+        </div>
+    );
+}
 
 

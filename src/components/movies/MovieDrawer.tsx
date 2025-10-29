@@ -98,6 +98,26 @@ export default function MovieDrawer({
                 formData.append(key, value);
                 return;
             }
+
+
+            if (Array.isArray(value)) {
+                value.forEach((v, i) => {
+                    if (key === "genres") {
+                        if (typeof v === "string") {
+                            formData.append(`${key}[${i}].name`, v);
+                        } else if (typeof v === "object" && v?.name) {
+                            formData.append(`${key}[${i}].name`, v.name);
+                        }
+                        return;
+                    }
+
+                    const normalized =
+                        typeof v === "object" ? JSON.stringify(v) : String(v);
+                    formData.append(`${key}[${i}]`, normalized);
+                });
+                return;
+            }
+
             if (Array.isArray(value)) {
                 value.forEach((v, i) => {
                     const normalized = normalizeValue(v);
@@ -209,7 +229,7 @@ export default function MovieDrawer({
     };
 
 
-
+    console.log(movieData)
 
 
     return (

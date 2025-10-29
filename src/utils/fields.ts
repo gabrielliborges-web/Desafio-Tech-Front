@@ -81,50 +81,6 @@ export const fieldsSearch: Field[] = [
   },
 
   {
-    internalName: "minBudget",
-    label: "Orçamento Mínimo ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "maxBudget",
-    label: "Orçamento Máximo ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-
-  {
-    internalName: "minRevenue",
-    label: "Receita Mínima ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "maxRevenue",
-    label: "Receita Máxima ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "minProfit",
-    label: "Lucro Mínimo ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-  {
-    internalName: "maxProfit",
-    label: "Lucro Máximo ($)",
-    type: "number",
-    value: "",
-    colSpan: 6,
-  },
-
-  {
     internalName: "minRatingAvg",
     label: "Nota Média Mínima",
     type: "number",
@@ -189,6 +145,14 @@ export const fieldsCreateMovie: Field[] = [
     required: true,
     type: "text",
     value: "",
+    colSpan: 12,
+  },
+  {
+    internalName: "genres",
+    label: "Gêneros",
+    type: "genremulti",
+    value: [],
+    required: false,
     colSpan: 12,
   },
 
